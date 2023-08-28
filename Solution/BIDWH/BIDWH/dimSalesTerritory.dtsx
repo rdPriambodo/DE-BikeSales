@@ -1,0 +1,186 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="6/21/2022 10:07:28 AM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="LAPTOP-4DUNKJCJ"
+  DTS:CreatorName="LAPTOP-4DUNKJCJ\1333"
+  DTS:DTSID="{F6AD86CA-39E8-4C83-85A2-7126FCC2D2E6}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="15.0.2000.180"
+  DTS:LocaleID="14345"
+  DTS:ObjectName="dimSalesTerritory"
+  DTS:PackageType="5"
+  DTS:VersionBuild="2"
+  DTS:VersionGUID="{999B9EEC-799D-4209-8FC7-2753703C83B2}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Create Table dimSalesTerritory"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{6C59113E-DC88-4190-A57A-22957DCF80A8}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Create Table dimSalesTerritory"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{D180EDF5-9DA8-4232-9307-5EF87C1BA49B}"
+          SQLTask:SqlStatementSource="IF NOT EXISTS(SELECT * FROM SYSOBJECTS WHERE NAME = 'dimSalesTerritory' AND XTYPE = 'U')&#xA;BEGIN&#xA;CREATE TABLE [dbo].[dimSalesTerritory](&#xA;&#x9;[SalesTerritoryKey] [int] PRIMARY KEY,&#xA;&#x9;[SalesTerritoryAlternateKey] [int] NULL,&#xA;&#x9;[SalesTerritoryRegion] [nvarchar](255) NULL,&#xA;&#x9;[SalesTerritoryCountry] [nvarchar](255) NULL,&#xA;&#x9;[SalesTerritoryGroup] [nvarchar](255) NULL,&#xA;&#x9;[ETLDate] [datetime] NULL&#xA;)&#xA;END" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Insert Unkown and Not Available"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{92E32A69-537F-4AB1-812E-1D2BA9E25811}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Insert Unkown and Not Available"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{D180EDF5-9DA8-4232-9307-5EF87C1BA49B}"
+          SQLTask:SqlStatementSource="IF NOT EXISTS(SELECT * FROM dimSalesTerritory WHERE SalesTerritoryKey IN ('-2'))&#xA;BEGIN&#xA;INSERT INTO dimSalesTerritory VALUES(&#xA;&#x9;'-2','-2','Unknown','Unknown','Unknown','1900-01-01 00:00:00.000'&#xA;)&#xA;END&#xA;IF NOT EXISTS(SELECT * FROM dimSalesTerritory WHERE SalesTerritoryKey IN ('-1'))&#xA;BEGIN&#xA;INSERT INTO dimSalesTerritory VALUES(&#xA;&#x9;'-1','-1','Not Available','Not Available','Not Available','1900-01-01 00:00:00.000'&#xA;)&#xA;END" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Merge"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{A1A2794B-7C6E-4807-B78E-5B921653AFCB}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Merge"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{D180EDF5-9DA8-4232-9307-5EF87C1BA49B}"
+          SQLTask:SqlStatementSource="MERGE dimSalesTerritory AS target&#xA;USING stgTeritorial&#xA;AS  source &#xA;ON (target.SalesTerritoryKey = source.SalesTerritoryKey)&#xA;WHEN MATCHED AND &#xA;&#x9;ISNULL(target.[SalesTerritoryKey],'NULL')&lt;&gt; ISNULL(source.[SalesTerritoryKey],'NULL') OR&#xA;&#x9;ISNULL(target.[SalesTerritoryAlternateKey],'NULL')&lt;&gt; ISNULL(source.[SalesTerritoryAlternateKey],'NULL') OR&#xA;&#x9;ISNULL(target.[SalesTerritoryRegion],'NULL')&lt;&gt; ISNULL(source.[SalesTerritoryRegion],'NULL') OR&#xA;&#x9;ISNULL(target.[SalesTerritoryCountry],'NULL')&lt;&gt; ISNULL(source.[SalesTerritoryCountry],'NULL') OR&#xA;&#x9;ISNULL(target.[SalesTerritoryGroup],'NULL')&lt;&gt; ISNULL(source.[SalesTerritoryGroup],'NULL')&#xA;THEN&#xA;    UPDATE SET &#xA;&#x9; [SalesTerritoryKey]= source.[SalesTerritoryKey]&#xA;&#x9;,[SalesTerritoryAlternateKey]= source.[SalesTerritoryAlternateKey]&#xA;&#x9;,[SalesTerritoryRegion]= source.[SalesTerritoryRegion]&#xA;&#x9;,[SalesTerritoryCountry]= source.[SalesTerritoryCountry]&#xA;&#x9;,[SalesTerritoryGroup]= source.[SalesTerritoryGroup]&#xA;&#x9;,ETLDate = GETDATE()&#x9;&#x9;&#x9;&#xA;&#xA;WHEN NOT MATCHED THEN&#xA;&#x9;&#x9;INSERT (&#xA;&#x9;&#x9; [SalesTerritoryKey]&#xA;&#x9;&#x9;,[SalesTerritoryAlternateKey]&#xA;&#x9;&#x9;,[SalesTerritoryRegion]&#xA;&#x9;&#x9;,[SalesTerritoryCountry]&#xA;&#x9;&#x9;,[SalesTerritoryGroup]&#xA;&#x9;&#x9;,[ETLDate]&#xA;&#x9;&#x9;)&#xA;&#x9;&#x9;VALUES (&#xA;&#x9;&#x9; source.[SalesTerritoryKey]&#xA;&#x9;&#x9;,source.[SalesTerritoryAlternateKey]&#xA;&#x9;&#x9;,source.[SalesTerritoryRegion]&#xA;&#x9;&#x9;,source.[SalesTerritoryCountry]&#xA;&#x9;&#x9;,source.[SalesTerritoryGroup]&#xA;&#x9;&#x9;,GETDATE()&#xA;&#x9;&#x9;);" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{CF1F2EB3-8742-42CE-9C71-3EA041AA13EA}"
+      DTS:From="Package\Create Table dimSalesTerritory"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Insert Unkown and Not Available" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{F0B66360-2CDF-4183-AD64-33831D59BFDA}"
+      DTS:From="Package\Insert Unkown and Not Available"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\Merge" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="224,42"
+          Id="Package\Create Table dimSalesTerritory"
+          TopLeft="5.5,5.5" />
+        <NodeLayout
+          Size="234,42"
+          Id="Package\Insert Unkown and Not Available"
+          TopLeft="155.5,118.5" />
+        <NodeLayout
+          Size="108,42"
+          Id="Package\Merge"
+          TopLeft="438.5,202.5" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="117.5,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="155,71"
+              Start="0,0"
+              End="155,63.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,31.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,31.5"
+                    Point2="0,35.5"
+                    Point3="4,35.5" />
+                  <mssgle:LineSegment
+                    End="151,35.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="151,35.5"
+                    Point2="155,35.5"
+                    Point3="155,39.5" />
+                  <mssgle:LineSegment
+                    End="155,63.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="272.5,160.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="220,42"
+              Start="0,0"
+              End="220,34.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,17" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,17"
+                    Point2="0,21"
+                    Point3="4,21" />
+                  <mssgle:LineSegment
+                    End="216,21" />
+                  <mssgle:CubicBezierSegment
+                    Point1="216,21"
+                    Point2="220,21"
+                    Point3="220,25" />
+                  <mssgle:LineSegment
+                    End="220,34.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

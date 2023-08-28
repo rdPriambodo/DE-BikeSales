@@ -1,0 +1,1848 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="6/21/2022 2:12:09 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="LAPTOP-4DUNKJCJ"
+  DTS:CreatorName="LAPTOP-4DUNKJCJ\1333"
+  DTS:DTSID="{5C1AEF55-3492-4CD5-A478-9BB23B5664AC}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="15.0.2000.180"
+  DTS:LocaleID="14345"
+  DTS:ObjectName="dimProductSubCategory"
+  DTS:PackageType="5"
+  DTS:VersionBuild="6"
+  DTS:VersionGUID="{839431EB-783B-417C-A387-FFC0C41968EE}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Create Table dimProductSubCategory"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{7D94F341-8371-47C4-8851-F78C5D1E30FA}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Create Table dimProductSubCategory"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{D180EDF5-9DA8-4232-9307-5EF87C1BA49B}"
+          SQLTask:SqlStatementSource="IF NOT EXISTS(SELECT * FROM SYSOBJECTS WHERE NAME = 'dimProductSubCategory' AND XTYPE = 'U')&#xA;BEGIN&#xA;CREATE TABLE [dbo].[dimProductSubCategory](&#xA;&#x9;[ProductSubcategoryKey] [int] PRIMARY KEY,&#xA;&#x9;[ProductCatergoryKey] [int] NULL,&#xA;&#x9;[ProductSubCategoryNameEnglish] [nvarchar](50) NULL,&#xA;&#x9;[ProductSubCategoryNameSpanish] [nvarchar](50) NULL,&#xA;&#x9;[ProductSubCategoryNameFrench] [nvarchar](50) NULL,&#xA;&#x9;[ETLDate] [datetime] NULL&#xA;)&#xA;END" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Insert Unknown and Not Available"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{9DCEEC0A-EA3C-40E9-8761-413608385CBD}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Insert Unknown and Not Available"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{D180EDF5-9DA8-4232-9307-5EF87C1BA49B}"
+          SQLTask:SqlStatementSource="IF NOT EXISTS(SELECT * FROM dimProductSubCategory WHERE ProductSubcategoryKey IN ('-2'))&#xA;BEGIN&#xA;INSERT INTO dimProductSubCategory VALUES(&#xA;&#x9;'-2','-2','Unknown','Unknown','Unknown','1901-01-01 00:00:00.000'&#xA;)&#xA;END&#xA;IF NOT EXISTS(SELECT * FROM dimProductSubCategory WHERE ProductSubcategoryKey IN ('-1'))&#xA;BEGIN&#xA;INSERT INTO dimProductSubCategory VALUES(&#xA;&#x9;'-1','-1','Not Available','Not Available','Not Available','1901-01-01 00:00:00.000'&#xA;)&#xA;END" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Upsert Lookup"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{F2395730-DE89-42B8-92F4-64DE53B8798D}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Upsert Lookup"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\Upsert Lookup\Data Conversion"
+              componentClassID="Microsoft.DataConvert"
+              contactInfo="Data Conversion;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Data Conversion"
+              name="Data Conversion"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\Upsert Lookup\Data Conversion.Inputs[Data Conversion Input]"
+                  name="Data Conversion Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Upsert Lookup\Data Conversion.Inputs[Data Conversion Input].Columns[ProductSubCategoryNameEnglish]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="16"
+                      cachedName="ProductSubCategoryNameEnglish"
+                      lineageId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Output].Columns[ProductSubCategoryNameEnglish]" />
+                    <inputColumn
+                      refId="Package\Upsert Lookup\Data Conversion.Inputs[Data Conversion Input].Columns[ProductSubCategoryNameSpanish]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="23"
+                      cachedName="ProductSubCategoryNameSpanish"
+                      lineageId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Output].Columns[ProductSubCategoryNameSpanish]" />
+                    <inputColumn
+                      refId="Package\Upsert Lookup\Data Conversion.Inputs[Data Conversion Input].Columns[ProductSubCategoryNameFrench]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="22"
+                      cachedName="ProductSubCategoryNameFrench"
+                      lineageId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Output].Columns[ProductSubCategoryNameFrench]" />
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Upsert Lookup\Data Conversion.Outputs[Data Conversion Output]"
+                  exclusionGroup="1"
+                  name="Data Conversion Output"
+                  synchronousInputId="Package\Upsert Lookup\Data Conversion.Inputs[Data Conversion Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Upsert Lookup\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductSubCategoryNameEnglish]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\Upsert Lookup\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductSubCategoryNameEnglish]"
+                      name="Copy of ProductSubCategoryNameEnglish"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Output].Columns[ProductSubCategoryNameEnglish]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Upsert Lookup\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductSubCategoryNameSpanish]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\Upsert Lookup\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductSubCategoryNameSpanish]"
+                      name="Copy of ProductSubCategoryNameSpanish"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Output].Columns[ProductSubCategoryNameSpanish]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Upsert Lookup\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductSubCategoryNameFrench]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      length="50"
+                      lineageId="Package\Upsert Lookup\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductSubCategoryNameFrench]"
+                      name="Copy of ProductSubCategoryNameFrench"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.Int32"
+                          description="Specifies the input column used as the source of data for the conversion."
+                          name="SourceInputColumnLineageID">#{Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Output].Columns[ProductSubCategoryNameFrench]}</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                          name="FastParse">false</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Upsert Lookup\Data Conversion.Outputs[Data Conversion Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Data Conversion Error Output"
+                  synchronousInputId="Package\Upsert Lookup\Data Conversion.Inputs[Data Conversion Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Upsert Lookup\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Upsert Lookup\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Upsert Lookup\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Upsert Lookup\Data Conversion.Outputs[Data Conversion Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Upsert Lookup\Derived Column"
+              componentClassID="Microsoft.DerivedColumn"
+              contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+              name="Derived Column"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\Upsert Lookup\Derived Column.Inputs[Derived Column Input]"
+                  description="Input to the Derived Column Transformation"
+                  name="Derived Column Input">
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Upsert Lookup\Derived Column.Outputs[Derived Column Output]"
+                  description="Default Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  name="Derived Column Output"
+                  synchronousInputId="Package\Upsert Lookup\Derived Column.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Upsert Lookup\Derived Column.Outputs[Derived Column Output].Columns[ETLDate]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Upsert Lookup\Derived Column.Outputs[Derived Column Output].Columns[ETLDate]"
+                      name="ETLDate"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">[GETDATE]()</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">GETDATE()</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Upsert Lookup\Derived Column.Outputs[Derived Column Error Output]"
+                  description="Error Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Derived Column Error Output"
+                  synchronousInputId="Package\Upsert Lookup\Derived Column.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Upsert Lookup\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Upsert Lookup\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Upsert Lookup\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Upsert Lookup\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Upsert Lookup\Lookup"
+              componentClassID="Microsoft.Lookup"
+              contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
+              description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
+              name="Lookup"
+              usesDispositions="true"
+              version="6">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Specifies the SQL statement that generates the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from [dbo].[dimProductSubCategory]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommandParam"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (select * from [dbo].[dimProductSubCategory]) [refTable]
+where [refTable].[ProductSubcategoryKey] = ? and [refTable].[ProductCatergoryKey] = ? and [refTable].[ProductSubCategoryNameEnglish] = ? and [refTable].[ProductSubCategoryNameSpanish] = ? and [refTable].[ProductSubCategoryNameFrench] = ?</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the type of connection used to access the reference dataset."
+                  name="ConnectionType"
+                  typeConverter="LookupConnectionType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the cache type of the lookup table."
+                  name="CacheType"
+                  typeConverter="CacheType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                  name="NoMatchBehavior"
+                  typeConverter="LookupNoMatchBehavior">1</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                  name="NoMatchCachePercentage">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                  name="MaxMemoryUsage">25</property>
+                <property
+                  dataType="System.Int64"
+                  description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                  name="MaxMemoryUsage64">25</property>
+                <property
+                  dataType="System.String"
+                  description="Indicates whether to reference metadata in an XML format."
+                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="ProductSubcategoryKey" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="ProductCatergoryKey" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="ProductSubCategoryNameEnglish" dataType="DT_WSTR" length="50" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="ProductSubCategoryNameSpanish" dataType="DT_WSTR" length="50" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="ProductSubCategoryNameFrench" dataType="DT_WSTR" length="50" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="ETLDate" dataType="DT_DBTIMESTAMP" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                <property
+                  containsID="true"
+                  dataType="System.String"
+                  description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                  name="ParameterMap">#{Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Output].Columns[ProductSubcategoryKey]};#{Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Output].Columns[ProductCatergoryKey]};#{Package\Upsert Lookup\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductSubCategoryNameEnglish]};#{Package\Upsert Lookup\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductSubCategoryNameSpanish]};#{Package\Upsert Lookup\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductSubCategoryNameFrench]};</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                  name="TreatDuplicateKeysAsError">false</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Upsert Lookup\Lookup.Connections[OleDbConnection]"
+                  connectionManagerID="{D180EDF5-9DA8-4232-9307-5EF87C1BA49B}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[LAPTOP-4DUNKJCJ.BIDWH]"
+                  description="Connection manager used to access lookup data."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Upsert Lookup\Lookup.Inputs[Lookup Input]"
+                  name="Lookup Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Upsert Lookup\Lookup.Inputs[Lookup Input].Columns[ProductSubcategoryKey]"
+                      cachedDataType="i4"
+                      cachedName="ProductSubcategoryKey"
+                      lineageId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Output].Columns[ProductSubcategoryKey]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table that a column joins."
+                          name="JoinToReferenceColumn">ProductSubcategoryKey</property>
+                        <property
+                          dataType="System.Null"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Upsert Lookup\Lookup.Inputs[Lookup Input].Columns[ProductCatergoryKey]"
+                      cachedDataType="i4"
+                      cachedName="ProductCatergoryKey"
+                      lineageId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Output].Columns[ProductCatergoryKey]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table that a column joins."
+                          name="JoinToReferenceColumn">ProductCatergoryKey</property>
+                        <property
+                          dataType="System.Null"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Upsert Lookup\Lookup.Inputs[Lookup Input].Columns[Copy of ProductSubCategoryNameEnglish]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="Copy of ProductSubCategoryNameEnglish"
+                      lineageId="Package\Upsert Lookup\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductSubCategoryNameEnglish]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table that a column joins."
+                          name="JoinToReferenceColumn">ProductSubCategoryNameEnglish</property>
+                        <property
+                          dataType="System.Null"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Upsert Lookup\Lookup.Inputs[Lookup Input].Columns[Copy of ProductSubCategoryNameSpanish]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="Copy of ProductSubCategoryNameSpanish"
+                      lineageId="Package\Upsert Lookup\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductSubCategoryNameSpanish]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table that a column joins."
+                          name="JoinToReferenceColumn">ProductSubCategoryNameSpanish</property>
+                        <property
+                          dataType="System.Null"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
+                    <inputColumn
+                      refId="Package\Upsert Lookup\Lookup.Inputs[Lookup Input].Columns[Copy of ProductSubCategoryNameFrench]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="Copy of ProductSubCategoryNameFrench"
+                      lineageId="Package\Upsert Lookup\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductSubCategoryNameFrench]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table that a column joins."
+                          name="JoinToReferenceColumn">ProductSubCategoryNameFrench</property>
+                        <property
+                          dataType="System.Null"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Upsert Lookup\Lookup.Outputs[Lookup Match Output]"
+                  errorOrTruncationOperation="Lookup"
+                  exclusionGroup="1"
+                  name="Lookup Match Output"
+                  synchronousInputId="Package\Upsert Lookup\Lookup.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Upsert Lookup\Lookup.Outputs[Lookup Match Output].Columns[ProductSubcategoryKey]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Copy Column"
+                      lineageId="Package\Upsert Lookup\Lookup.Outputs[Lookup Match Output].Columns[ProductSubcategoryKey]"
+                      name="ProductSubcategoryKey"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn">ProductSubcategoryKey</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Upsert Lookup\Lookup.Outputs[Lookup Match Output].Columns[ProductCatergoryKey]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Copy Column"
+                      lineageId="Package\Upsert Lookup\Lookup.Outputs[Lookup Match Output].Columns[ProductCatergoryKey]"
+                      name="ProductCatergoryKey"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn">ProductCatergoryKey</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Upsert Lookup\Lookup.Outputs[Lookup Match Output].Columns[ProductSubCategoryNameEnglish]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Copy Column"
+                      length="50"
+                      lineageId="Package\Upsert Lookup\Lookup.Outputs[Lookup Match Output].Columns[ProductSubCategoryNameEnglish]"
+                      name="ProductSubCategoryNameEnglish"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn">ProductSubCategoryNameEnglish</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Upsert Lookup\Lookup.Outputs[Lookup Match Output].Columns[ProductSubCategoryNameSpanish]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Copy Column"
+                      length="50"
+                      lineageId="Package\Upsert Lookup\Lookup.Outputs[Lookup Match Output].Columns[ProductSubCategoryNameSpanish]"
+                      name="ProductSubCategoryNameSpanish"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn">ProductSubCategoryNameSpanish</property>
+                      </properties>
+                    </outputColumn>
+                    <outputColumn
+                      refId="Package\Upsert Lookup\Lookup.Outputs[Lookup Match Output].Columns[ProductSubCategoryNameFrench]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Copy Column"
+                      length="50"
+                      lineageId="Package\Upsert Lookup\Lookup.Outputs[Lookup Match Output].Columns[ProductSubCategoryNameFrench]"
+                      name="ProductSubCategoryNameFrench"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn">ProductSubCategoryNameFrench</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Upsert Lookup\Lookup.Outputs[Lookup No Match Output]"
+                  description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                  exclusionGroup="1"
+                  name="Lookup No Match Output"
+                  synchronousInputId="Package\Upsert Lookup\Lookup.Inputs[Lookup Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Upsert Lookup\Lookup.Outputs[Lookup Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Lookup Error Output"
+                  synchronousInputId="Package\Upsert Lookup\Lookup.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Upsert Lookup\Lookup.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Upsert Lookup\Lookup.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Upsert Lookup\Lookup.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Upsert Lookup\Lookup.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Upsert Lookup\Lookup 1"
+              componentClassID="Microsoft.Lookup"
+              contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
+              description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
+              name="Lookup 1"
+              usesDispositions="true"
+              version="6">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Specifies the SQL statement that generates the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from [dbo].[dimProductSubCategory]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommandParam"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (select * from [dbo].[dimProductSubCategory]) [refTable]
+where [refTable].[ProductSubcategoryKey] = ?</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the type of connection used to access the reference dataset."
+                  name="ConnectionType"
+                  typeConverter="LookupConnectionType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the cache type of the lookup table."
+                  name="CacheType"
+                  typeConverter="CacheType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                  name="NoMatchBehavior"
+                  typeConverter="LookupNoMatchBehavior">1</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                  name="NoMatchCachePercentage">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                  name="MaxMemoryUsage">25</property>
+                <property
+                  dataType="System.Int64"
+                  description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                  name="MaxMemoryUsage64">25</property>
+                <property
+                  dataType="System.String"
+                  description="Indicates whether to reference metadata in an XML format."
+                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="ProductSubcategoryKey" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="ProductCatergoryKey" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="ProductSubCategoryNameEnglish" dataType="DT_WSTR" length="50" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="ProductSubCategoryNameSpanish" dataType="DT_WSTR" length="50" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="ProductSubCategoryNameFrench" dataType="DT_WSTR" length="50" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="ETLDate" dataType="DT_DBTIMESTAMP" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                <property
+                  containsID="true"
+                  dataType="System.String"
+                  description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                  name="ParameterMap">#{Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Output].Columns[ProductSubcategoryKey]};</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                  name="TreatDuplicateKeysAsError">false</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Upsert Lookup\Lookup 1.Connections[OleDbConnection]"
+                  connectionManagerID="{D180EDF5-9DA8-4232-9307-5EF87C1BA49B}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[LAPTOP-4DUNKJCJ.BIDWH]"
+                  description="Connection manager used to access lookup data."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Upsert Lookup\Lookup 1.Inputs[Lookup Input]"
+                  name="Lookup Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Upsert Lookup\Lookup 1.Inputs[Lookup Input].Columns[ProductSubcategoryKey]"
+                      cachedDataType="i4"
+                      cachedName="ProductSubcategoryKey"
+                      lineageId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Output].Columns[ProductSubcategoryKey]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table that a column joins."
+                          name="JoinToReferenceColumn">ProductSubcategoryKey</property>
+                        <property
+                          dataType="System.Null"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Upsert Lookup\Lookup 1.Outputs[Lookup Match Output]"
+                  errorOrTruncationOperation="Lookup"
+                  exclusionGroup="1"
+                  name="Lookup Match Output"
+                  synchronousInputId="Package\Upsert Lookup\Lookup 1.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Upsert Lookup\Lookup 1.Outputs[Lookup Match Output].Columns[ProductSubcategoryKey]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Copy Column"
+                      lineageId="Package\Upsert Lookup\Lookup 1.Outputs[Lookup Match Output].Columns[ProductSubcategoryKey]"
+                      name="ProductSubcategoryKey"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn">ProductSubcategoryKey</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Upsert Lookup\Lookup 1.Outputs[Lookup No Match Output]"
+                  description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                  exclusionGroup="1"
+                  name="Lookup No Match Output"
+                  synchronousInputId="Package\Upsert Lookup\Lookup 1.Inputs[Lookup Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Upsert Lookup\Lookup 1.Outputs[Lookup Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Lookup Error Output"
+                  synchronousInputId="Package\Upsert Lookup\Lookup 1.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Upsert Lookup\Lookup 1.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Upsert Lookup\Lookup 1.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Upsert Lookup\Lookup 1.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Upsert Lookup\Lookup 1.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Upsert Lookup\OLE DB Command"
+              componentClassID="Microsoft.OLEDBCommand"
+              contactInfo="OLE DB Command;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;2"
+              description="Runs an SQL statement for each row in a data flow. For example, call a 'new employee setup' stored procedure for each row in the 'new employees' table. Note: running an SQL statement for each row of a large data flow may take a long time."
+              name="OLE DB Command"
+              usesDispositions="true"
+              version="2">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">UPDATE dimProductSubCategory SET
+       [ProductCatergoryKey]=?
+      ,[ProductSubCategoryNameEnglish]=?
+      ,[ProductSubCategoryNameSpanish]=?
+      ,[ProductSubCategoryNameFrench]=?
+      ,[ETLDate] = GETDATE()
+WHERE [ProductSubcategoryKey] = ?</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Upsert Lookup\OLE DB Command.Connections[OleDbConnection]"
+                  connectionManagerID="{D180EDF5-9DA8-4232-9307-5EF87C1BA49B}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[LAPTOP-4DUNKJCJ.BIDWH]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Upsert Lookup\OLE DB Command.Inputs[OLE DB Command Input]"
+                  errorOrTruncationOperation="Command Execution"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Command Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Upsert Lookup\OLE DB Command.Inputs[OLE DB Command Input].Columns[ProductSubcategoryKey]"
+                      cachedDataType="i4"
+                      cachedName="ProductSubcategoryKey"
+                      externalMetadataColumnId="Package\Upsert Lookup\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_4]"
+                      lineageId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Output].Columns[ProductSubcategoryKey]" />
+                    <inputColumn
+                      refId="Package\Upsert Lookup\OLE DB Command.Inputs[OLE DB Command Input].Columns[ProductCatergoryKey]"
+                      cachedDataType="i4"
+                      cachedName="ProductCatergoryKey"
+                      externalMetadataColumnId="Package\Upsert Lookup\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_0]"
+                      lineageId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Output].Columns[ProductCatergoryKey]" />
+                    <inputColumn
+                      refId="Package\Upsert Lookup\OLE DB Command.Inputs[OLE DB Command Input].Columns[Copy of ProductSubCategoryNameEnglish]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="Copy of ProductSubCategoryNameEnglish"
+                      externalMetadataColumnId="Package\Upsert Lookup\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_1]"
+                      lineageId="Package\Upsert Lookup\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductSubCategoryNameEnglish]" />
+                    <inputColumn
+                      refId="Package\Upsert Lookup\OLE DB Command.Inputs[OLE DB Command Input].Columns[Copy of ProductSubCategoryNameSpanish]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="Copy of ProductSubCategoryNameSpanish"
+                      externalMetadataColumnId="Package\Upsert Lookup\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_2]"
+                      lineageId="Package\Upsert Lookup\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductSubCategoryNameSpanish]" />
+                    <inputColumn
+                      refId="Package\Upsert Lookup\OLE DB Command.Inputs[OLE DB Command Input].Columns[Copy of ProductSubCategoryNameFrench]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="Copy of ProductSubCategoryNameFrench"
+                      externalMetadataColumnId="Package\Upsert Lookup\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_3]"
+                      lineageId="Package\Upsert Lookup\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductSubCategoryNameFrench]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Upsert Lookup\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_0]"
+                      dataType="i4"
+                      name="Param_0">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">81</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Upsert Lookup\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_1]"
+                      dataType="wstr"
+                      length="50"
+                      name="Param_1">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Upsert Lookup\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_2]"
+                      dataType="wstr"
+                      length="50"
+                      name="Param_2">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Upsert Lookup\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_3]"
+                      dataType="wstr"
+                      length="50"
+                      name="Param_3">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Upsert Lookup\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_4]"
+                      dataType="i4"
+                      name="Param_4">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">81</property>
+                      </properties>
+                    </externalMetadataColumn>
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Upsert Lookup\OLE DB Command.Outputs[OLE DB Command Output]"
+                  exclusionGroup="1"
+                  name="OLE DB Command Output"
+                  synchronousInputId="Package\Upsert Lookup\OLE DB Command.Inputs[OLE DB Command Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Upsert Lookup\OLE DB Command.Outputs[OLE DB Command Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Command Error Output"
+                  synchronousInputId="Package\Upsert Lookup\OLE DB Command.Inputs[OLE DB Command Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Upsert Lookup\OLE DB Command.Outputs[OLE DB Command Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Upsert Lookup\OLE DB Command.Outputs[OLE DB Command Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Upsert Lookup\OLE DB Command.Outputs[OLE DB Command Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Upsert Lookup\OLE DB Command.Outputs[OLE DB Command Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Upsert Lookup\OLE DB Destination"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="OLE DB Destination"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[dimProductSubCategory]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Upsert Lookup\OLE DB Destination.Connections[OleDbConnection]"
+                  connectionManagerID="{D180EDF5-9DA8-4232-9307-5EF87C1BA49B}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[LAPTOP-4DUNKJCJ.BIDWH]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Upsert Lookup\OLE DB Destination.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Upsert Lookup\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[ProductSubcategoryKey]"
+                      cachedDataType="i4"
+                      cachedName="ProductSubcategoryKey"
+                      externalMetadataColumnId="Package\Upsert Lookup\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ProductSubcategoryKey]"
+                      lineageId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Output].Columns[ProductSubcategoryKey]" />
+                    <inputColumn
+                      refId="Package\Upsert Lookup\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[ProductCatergoryKey]"
+                      cachedDataType="i4"
+                      cachedName="ProductCatergoryKey"
+                      externalMetadataColumnId="Package\Upsert Lookup\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ProductCatergoryKey]"
+                      lineageId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Output].Columns[ProductCatergoryKey]" />
+                    <inputColumn
+                      refId="Package\Upsert Lookup\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[ETLDate]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="ETLDate"
+                      externalMetadataColumnId="Package\Upsert Lookup\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ETLDate]"
+                      lineageId="Package\Upsert Lookup\Derived Column.Outputs[Derived Column Output].Columns[ETLDate]" />
+                    <inputColumn
+                      refId="Package\Upsert Lookup\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Copy of ProductSubCategoryNameEnglish]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="Copy of ProductSubCategoryNameEnglish"
+                      externalMetadataColumnId="Package\Upsert Lookup\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ProductSubCategoryNameEnglish]"
+                      lineageId="Package\Upsert Lookup\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductSubCategoryNameEnglish]" />
+                    <inputColumn
+                      refId="Package\Upsert Lookup\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Copy of ProductSubCategoryNameSpanish]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="Copy of ProductSubCategoryNameSpanish"
+                      externalMetadataColumnId="Package\Upsert Lookup\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ProductSubCategoryNameSpanish]"
+                      lineageId="Package\Upsert Lookup\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductSubCategoryNameSpanish]" />
+                    <inputColumn
+                      refId="Package\Upsert Lookup\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Copy of ProductSubCategoryNameFrench]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="Copy of ProductSubCategoryNameFrench"
+                      externalMetadataColumnId="Package\Upsert Lookup\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ProductSubCategoryNameFrench]"
+                      lineageId="Package\Upsert Lookup\Data Conversion.Outputs[Data Conversion Output].Columns[Copy of ProductSubCategoryNameFrench]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Upsert Lookup\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ProductSubcategoryKey]"
+                      dataType="i4"
+                      name="ProductSubcategoryKey" />
+                    <externalMetadataColumn
+                      refId="Package\Upsert Lookup\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ProductCatergoryKey]"
+                      dataType="i4"
+                      name="ProductCatergoryKey" />
+                    <externalMetadataColumn
+                      refId="Package\Upsert Lookup\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ProductSubCategoryNameEnglish]"
+                      dataType="wstr"
+                      length="50"
+                      name="ProductSubCategoryNameEnglish" />
+                    <externalMetadataColumn
+                      refId="Package\Upsert Lookup\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ProductSubCategoryNameSpanish]"
+                      dataType="wstr"
+                      length="50"
+                      name="ProductSubCategoryNameSpanish" />
+                    <externalMetadataColumn
+                      refId="Package\Upsert Lookup\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ProductSubCategoryNameFrench]"
+                      dataType="wstr"
+                      length="50"
+                      name="ProductSubCategoryNameFrench" />
+                    <externalMetadataColumn
+                      refId="Package\Upsert Lookup\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ETLDate]"
+                      dataType="dbTimeStamp"
+                      name="ETLDate" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Upsert Lookup\OLE DB Destination.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Upsert Lookup\OLE DB Destination.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Upsert Lookup\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Upsert Lookup\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Upsert Lookup\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Upsert Lookup\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Upsert Lookup\OLE DB Source"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="OLE DB Source"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT DISTINCT CONVERT(INT,ProductSubcategoryKey) AS ProductSubcategoryKey,
+CASE
+	WHEN ProductSubCategoryKey IN ('1','2','3') THEN 1 --BIKE
+	WHEN ProductSubCategoryKey IN ('4','5','6','7','8','9','10','11','12','13','14','15','16','17','37') THEN 2 --COMPONENT
+	WHEN ProductSubCategoryKey IN ('18','19','20','21','22','23','24','25')  THEN 3 --CLOTHING
+	WHEN ProductSubCategoryKey IN ('26','27','28','29','30','31','32','33','34','35','36')THEN 4 --ACCESSORIES
+	ELSE 5
+END AS ProductCatergoryKey,
+CASE
+	WHEN ProductSubcategoryKey = '1'  THEN 'Mountain Bike'
+	WHEN ProductSubcategoryKey = '2'  THEN 'Road Bike'
+	WHEN ProductSubcategoryKey = '3'  THEN 'Touring'
+	WHEN ProductSubcategoryKey = '4'  THEN 'Handlebars'
+	WHEN ProductSubcategoryKey = '5'  THEN 'Bracket'
+	WHEN ProductSubcategoryKey = '6'  THEN 'Brakes'
+	WHEN ProductSubcategoryKey = '7'  THEN 'Chain'
+	WHEN ProductSubcategoryKey = '8'  THEN 'Crankset'
+	WHEN ProductSubcategoryKey = '9'  THEN 'Derailleur'
+	WHEN ProductSubcategoryKey = '10' THEN 'Fork'
+	WHEN ProductSubcategoryKey = '11' THEN 'Headset'
+	WHEN ProductSubcategoryKey = '12' THEN 'Mountain Frame'
+	WHEN ProductSubcategoryKey = '13' THEN 'Pedal'
+	WHEN ProductSubcategoryKey = '14' THEN 'Road Frame'
+	WHEN ProductSubcategoryKey = '15' THEN 'Seat/Saddle'
+	WHEN ProductSubcategoryKey = '16' THEN 'Touring Frame'
+	WHEN ProductSubcategoryKey = '17' THEN 'Wheel'
+	WHEN ProductSubcategoryKey = '18' THEN 'Bib-Shorts'
+	WHEN ProductSubcategoryKey = '19' THEN 'Cap'
+	WHEN ProductSubcategoryKey = '20' THEN 'Gloves'
+	WHEN ProductSubcategoryKey = '21' THEN 'Jersey'
+	WHEN ProductSubcategoryKey = '22' THEN 'Shorts'
+	WHEN ProductSubcategoryKey = '23' THEN 'Socks'
+	WHEN ProductSubcategoryKey = '24' THEN 'Womens Tights'
+	WHEN ProductSubcategoryKey = '25' THEN 'Vest'
+	WHEN ProductSubcategoryKey = '26' THEN 'Hitch Rack'
+	WHEN ProductSubcategoryKey = '27' THEN 'Bike Stand'
+	WHEN ProductSubcategoryKey = '28' THEN 'Bottle'
+	WHEN ProductSubcategoryKey = '29' THEN 'Bike Wash'
+	WHEN ProductSubcategoryKey = '30' THEN 'Fender Set'
+	WHEN ProductSubcategoryKey = '31' THEN 'Helmet'
+	WHEN ProductSubcategoryKey = '32' THEN 'Hydration Pack'
+	WHEN ProductSubcategoryKey = '33' THEN 'Lights'
+	WHEN ProductSubcategoryKey = '34' THEN 'Cable Lock'
+	WHEN ProductSubcategoryKey = '35' THEN 'Touring-Panniers'
+	WHEN ProductSubcategoryKey = '36' THEN 'Pump'
+	WHEN ProductSubcategoryKey = '37' THEN 'Tire'
+	ELSE 'Other'
+END AS ProductSubCategoryNameEnglish,
+CASE
+	WHEN ProductSubcategoryKey = '1'  THEN 'Bicicleta de montaña'
+	WHEN ProductSubcategoryKey = '2'  THEN 'Bicicleta de carretera'
+	WHEN ProductSubcategoryKey = '3'  THEN 'Gira'
+	WHEN ProductSubcategoryKey = '4'  THEN 'Manillares'
+	WHEN ProductSubcategoryKey = '5'  THEN 'Soporte'
+	WHEN ProductSubcategoryKey = '6'  THEN 'Frenos'
+	WHEN ProductSubcategoryKey = '7'  THEN 'Cadena'
+	WHEN ProductSubcategoryKey = '8'  THEN 'Juego de bielas'
+	WHEN ProductSubcategoryKey = '9'  THEN 'Desviador'
+	WHEN ProductSubcategoryKey = '10' THEN 'Tenedor'
+	WHEN ProductSubcategoryKey = '11' THEN 'Auriculares'
+	WHEN ProductSubcategoryKey = '12' THEN 'Marco de montaña'
+	WHEN ProductSubcategoryKey = '13' THEN 'Pedalear'
+	WHEN ProductSubcategoryKey = '14' THEN 'Cuadro de carretera'
+	WHEN ProductSubcategoryKey = '15' THEN 'Asiento/sillín'
+	WHEN ProductSubcategoryKey = '16' THEN 'Marco de gira'
+	WHEN ProductSubcategoryKey = '17' THEN 'rueda'
+	WHEN ProductSubcategoryKey = '18' THEN 'Culottes con tirantes'
+	WHEN ProductSubcategoryKey = '19' THEN 'Gorra'
+	WHEN ProductSubcategoryKey = '20' THEN 'Guantes'
+	WHEN ProductSubcategoryKey = '21' THEN 'Jersey'
+	WHEN ProductSubcategoryKey = '22' THEN 'pantalones cortos'
+	WHEN ProductSubcategoryKey = '23' THEN 'Calcetines'
+	WHEN ProductSubcategoryKey = '24' THEN 'Medias de mujer'
+	WHEN ProductSubcategoryKey = '25' THEN 'chaleco'
+	WHEN ProductSubcategoryKey = '26' THEN 'Portaequipajes'
+	WHEN ProductSubcategoryKey = '27' THEN 'Soporte para bicicletas'
+	WHEN ProductSubcategoryKey = '28' THEN 'botella'
+	WHEN ProductSubcategoryKey = '29' THEN 'Lavado de bicicletas'
+	WHEN ProductSubcategoryKey = '30' THEN 'Juego de guardabarros'
+	WHEN ProductSubcategoryKey = '31' THEN 'Casco'
+	WHEN ProductSubcategoryKey = '32' THEN 'Paquete de hidratación'
+	WHEN ProductSubcategoryKey = '33' THEN 'Luces'
+	WHEN ProductSubcategoryKey = '34' THEN 'Bloqueo de cables'
+	WHEN ProductSubcategoryKey = '35' THEN 'Touring-Alforjas'
+	WHEN ProductSubcategoryKey = '36' THEN 'bomba'
+	WHEN ProductSubcategoryKey = '37' THEN 'Tir'
+	ELSE 'Otra'
+END AS ProductSubCategoryNameSpanish,
+CASE
+	WHEN ProductSubcategoryKey = '1'  THEN 'Vélo de montagne'
+	WHEN ProductSubcategoryKey = '2'  THEN 'Vélo de route'
+	WHEN ProductSubcategoryKey = '3'  THEN 'Tournée'
+	WHEN ProductSubcategoryKey = '4'  THEN 'Guidons'
+	WHEN ProductSubcategoryKey = '5'  THEN 'Support'
+	WHEN ProductSubcategoryKey = '6'  THEN 'Freins'
+	WHEN ProductSubcategoryKey = '7'  THEN 'Chaîne'
+	WHEN ProductSubcategoryKey = '8'  THEN 'Pédalier'
+	WHEN ProductSubcategoryKey = '9'  THEN 'Dérailleur'
+	WHEN ProductSubcategoryKey = '10' THEN 'Fourchette'
+	WHEN ProductSubcategoryKey = '11' THEN 'Casque'
+	WHEN ProductSubcategoryKey = '12' THEN 'Cadre de montagne'
+	WHEN ProductSubcategoryKey = '13' THEN 'Pédale'
+	WHEN ProductSubcategoryKey = '14' THEN 'Cadre de route'
+	WHEN ProductSubcategoryKey = '15' THEN 'Siège/Selle'
+	WHEN ProductSubcategoryKey = '16' THEN 'Cadre de randonnée'
+	WHEN ProductSubcategoryKey = '17' THEN 'Roue'
+	WHEN ProductSubcategoryKey = '18' THEN 'Cuissards'
+	WHEN ProductSubcategoryKey = '19' THEN 'Casquette'
+	WHEN ProductSubcategoryKey = '20' THEN 'Gants'
+	WHEN ProductSubcategoryKey = '21' THEN 'Maillot'
+	WHEN ProductSubcategoryKey = '22' THEN 'Short'
+	WHEN ProductSubcategoryKey = '23' THEN 'Chaussettes'
+	WHEN ProductSubcategoryKey = '24' THEN 'collants pour femmes'
+	WHEN ProductSubcategoryKey = '25' THEN 'Gilet'
+	WHEN ProductSubcategoryKey = '26' THEN 'Support dattelage'
+	WHEN ProductSubcategoryKey = '27' THEN 'Support à vélo'
+	WHEN ProductSubcategoryKey = '28' THEN 'Bouteille'
+	WHEN ProductSubcategoryKey = '29' THEN 'Lavage de vélo'
+	WHEN ProductSubcategoryKey = '30' THEN 'Ensemble de garde-boue'
+	WHEN ProductSubcategoryKey = '31' THEN 'Casque'
+	WHEN ProductSubcategoryKey = '32' THEN 'Pack dhydratation'
+	WHEN ProductSubcategoryKey = '33' THEN 'Lumières'
+	WHEN ProductSubcategoryKey = '34' THEN 'Câble antivol'
+	WHEN ProductSubcategoryKey = '35' THEN 'Touring-Panniers'
+	WHEN ProductSubcategoryKey = '36' THEN 'Pompe'
+	WHEN ProductSubcategoryKey = '37' THEN 'Tir'
+	ELSE 'Autre'
+END AS ProductSubCategoryNameFrench
+FROM stgProduct 
+WHERE ProductSubcategoryKey IS NOT NULL</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Upsert Lookup\OLE DB Source.Connections[OleDbConnection]"
+                  connectionManagerID="{D180EDF5-9DA8-4232-9307-5EF87C1BA49B}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[LAPTOP-4DUNKJCJ.BIDWH]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Output].Columns[ProductSubcategoryKey]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ProductSubcategoryKey]"
+                      lineageId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Output].Columns[ProductSubcategoryKey]"
+                      name="ProductSubcategoryKey"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Output].Columns[ProductCatergoryKey]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ProductCatergoryKey]"
+                      lineageId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Output].Columns[ProductCatergoryKey]"
+                      name="ProductCatergoryKey"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Output].Columns[ProductSubCategoryNameEnglish]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ProductSubCategoryNameEnglish]"
+                      length="16"
+                      lineageId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Output].Columns[ProductSubCategoryNameEnglish]"
+                      name="ProductSubCategoryNameEnglish"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Output].Columns[ProductSubCategoryNameSpanish]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ProductSubCategoryNameSpanish]"
+                      length="23"
+                      lineageId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Output].Columns[ProductSubCategoryNameSpanish]"
+                      name="ProductSubCategoryNameSpanish"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Output].Columns[ProductSubCategoryNameFrench]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ProductSubCategoryNameFrench]"
+                      length="22"
+                      lineageId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Output].Columns[ProductSubCategoryNameFrench]"
+                      name="ProductSubCategoryNameFrench"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ProductSubcategoryKey]"
+                      dataType="i4"
+                      name="ProductSubcategoryKey" />
+                    <externalMetadataColumn
+                      refId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ProductCatergoryKey]"
+                      dataType="i4"
+                      name="ProductCatergoryKey" />
+                    <externalMetadataColumn
+                      refId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ProductSubCategoryNameEnglish]"
+                      codePage="1252"
+                      dataType="str"
+                      length="16"
+                      name="ProductSubCategoryNameEnglish" />
+                    <externalMetadataColumn
+                      refId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ProductSubCategoryNameSpanish]"
+                      codePage="1252"
+                      dataType="str"
+                      length="23"
+                      name="ProductSubCategoryNameSpanish" />
+                    <externalMetadataColumn
+                      refId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ProductSubCategoryNameFrench]"
+                      codePage="1252"
+                      dataType="str"
+                      length="22"
+                      name="ProductSubCategoryNameFrench" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ProductSubcategoryKey]"
+                      dataType="i4"
+                      lineageId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ProductSubcategoryKey]"
+                      name="ProductSubcategoryKey" />
+                    <outputColumn
+                      refId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ProductCatergoryKey]"
+                      dataType="i4"
+                      lineageId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ProductCatergoryKey]"
+                      name="ProductCatergoryKey" />
+                    <outputColumn
+                      refId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ProductSubCategoryNameEnglish]"
+                      codePage="1252"
+                      dataType="str"
+                      length="16"
+                      lineageId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ProductSubCategoryNameEnglish]"
+                      name="ProductSubCategoryNameEnglish" />
+                    <outputColumn
+                      refId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ProductSubCategoryNameSpanish]"
+                      codePage="1252"
+                      dataType="str"
+                      length="23"
+                      lineageId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ProductSubCategoryNameSpanish]"
+                      name="ProductSubCategoryNameSpanish" />
+                    <outputColumn
+                      refId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ProductSubCategoryNameFrench]"
+                      codePage="1252"
+                      dataType="str"
+                      length="22"
+                      lineageId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ProductSubCategoryNameFrench]"
+                      name="ProductSubCategoryNameFrench" />
+                    <outputColumn
+                      refId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Upsert Lookup.Paths[Data Conversion Output]"
+              endId="Package\Upsert Lookup\Lookup.Inputs[Lookup Input]"
+              name="Data Conversion Output"
+              startId="Package\Upsert Lookup\Data Conversion.Outputs[Data Conversion Output]" />
+            <path
+              refId="Package\Upsert Lookup.Paths[Derived Column Output]"
+              endId="Package\Upsert Lookup\Data Conversion.Inputs[Data Conversion Input]"
+              name="Derived Column Output"
+              startId="Package\Upsert Lookup\Derived Column.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\Upsert Lookup.Paths[Lookup Match Output]"
+              endId="Package\Upsert Lookup\OLE DB Command.Inputs[OLE DB Command Input]"
+              name="Lookup Match Output"
+              startId="Package\Upsert Lookup\Lookup 1.Outputs[Lookup Match Output]" />
+            <path
+              refId="Package\Upsert Lookup.Paths[Lookup No Match Output]"
+              endId="Package\Upsert Lookup\Lookup 1.Inputs[Lookup Input]"
+              name="Lookup No Match Output"
+              startId="Package\Upsert Lookup\Lookup.Outputs[Lookup No Match Output]" />
+            <path
+              refId="Package\Upsert Lookup.Paths[Lookup No Match Output1]"
+              endId="Package\Upsert Lookup\OLE DB Destination.Inputs[OLE DB Destination Input]"
+              name="Lookup No Match Output"
+              startId="Package\Upsert Lookup\Lookup 1.Outputs[Lookup No Match Output]" />
+            <path
+              refId="Package\Upsert Lookup.Paths[OLE DB Source Output]"
+              endId="Package\Upsert Lookup\Derived Column.Inputs[Derived Column Input]"
+              name="OLE DB Source Output"
+              startId="Package\Upsert Lookup\OLE DB Source.Outputs[OLE DB Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{92D23FE0-6BFE-4B73-A67C-9F61BE1C2ADE}"
+      DTS:From="Package\Create Table dimProductSubCategory"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Insert Unknown and Not Available" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{5C38E5E4-F3B5-484E-AC1F-C6BE9F8A034C}"
+      DTS:From="Package\Insert Unknown and Not Available"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\Upsert Lookup" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="255,42"
+          Id="Package\Create Table dimProductSubCategory"
+          TopLeft="43.5,25.5" />
+        <NodeLayout
+          Size="240,42"
+          Id="Package\Insert Unknown and Not Available"
+          TopLeft="216.5,109.5" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="171,67.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="165.5,42"
+              Start="0,0"
+              End="165.5,34.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,17" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,17"
+                    Point2="0,21"
+                    Point3="4,21" />
+                  <mssgle:LineSegment
+                    End="161.5,21" />
+                  <mssgle:CubicBezierSegment
+                    Point1="161.5,21"
+                    Point2="165.5,21"
+                    Point3="165.5,25" />
+                  <mssgle:LineSegment
+                    End="165.5,34.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="147,42"
+          Id="Package\Upsert Lookup"
+          TopLeft="445.5,180.5" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="336.5,151.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="182.5,29"
+              Start="0,0"
+              End="182.5,21.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,10.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,10.5"
+                    Point2="0,14.5"
+                    Point3="4,14.5" />
+                  <mssgle:LineSegment
+                    End="178.5,14.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="178.5,14.5"
+                    Point2="182.5,14.5"
+                    Point3="182.5,18.5" />
+                  <mssgle:LineSegment
+                    End="182.5,21.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Upsert Lookup">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="150,42"
+          Id="Package\Upsert Lookup\OLE DB Source"
+          TopLeft="54.5,19.5" />
+        <NodeLayout
+          Size="154,42"
+          Id="Package\Upsert Lookup\Derived Column"
+          TopLeft="250.5,75.5" />
+        <EdgeLayout
+          Id="Package\Upsert Lookup.Paths[OLE DB Source Output]"
+          TopLeft="204.5,40.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="46,56"
+              Start="0,0"
+              End="38.5,56">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="19,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="19,0"
+                    Point2="23,0"
+                    Point3="23,4" />
+                  <mssgle:LineSegment
+                    End="23,52" />
+                  <mssgle:CubicBezierSegment
+                    Point1="23,52"
+                    Point2="23,56"
+                    Point3="27,56" />
+                  <mssgle:LineSegment
+                    End="38.5,56" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="156,42"
+          Id="Package\Upsert Lookup\Data Conversion"
+          TopLeft="455.5,32.5" />
+        <EdgeLayout
+          Id="Package\Upsert Lookup.Paths[Derived Column Output]"
+          TopLeft="404.5,96.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="51,-43"
+              Start="0,0"
+              End="43.5,-43">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="21.5,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="21.5,0"
+                    Point2="25.5,0"
+                    Point3="25.5,-4" />
+                  <mssgle:LineSegment
+                    End="25.5,-39" />
+                  <mssgle:CubicBezierSegment
+                    Point1="25.5,-39"
+                    Point2="25.5,-43"
+                    Point3="29.5,-43" />
+                  <mssgle:LineSegment
+                    End="43.5,-43" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="113,42"
+          Id="Package\Upsert Lookup\Lookup"
+          TopLeft="592.5,128.5" />
+        <EdgeLayout
+          Id="Package\Upsert Lookup.Paths[Data Conversion Output]"
+          TopLeft="533.5,74.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="115.5,54"
+              Start="0,0"
+              End="115.5,46.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,23" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,23"
+                    Point2="0,27"
+                    Point3="4,27" />
+                  <mssgle:LineSegment
+                    End="111.5,27" />
+                  <mssgle:CubicBezierSegment
+                    Point1="111.5,27"
+                    Point2="115.5,27"
+                    Point3="115.5,31" />
+                  <mssgle:LineSegment
+                    End="115.5,46.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="122,42"
+          Id="Package\Upsert Lookup\Lookup 1"
+          TopLeft="310.5,138.5" />
+        <EdgeLayout
+          Id="Package\Upsert Lookup.Paths[Lookup No Match Output]"
+          TopLeft="592.5,149.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-160,10"
+              Start="0,0"
+              End="-152.5,10">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="-76,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-76,0"
+                    Point2="-80,0"
+                    Point3="-80,4" />
+                  <mssgle:LineSegment
+                    End="-80,6" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-80,6"
+                    Point2="-80,10"
+                    Point3="-84,10" />
+                  <mssgle:LineSegment
+                    End="-152.5,10" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-135.80638671875,-17.609375,111.6127734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="171,42"
+          Id="Package\Upsert Lookup\OLE DB Destination"
+          TopLeft="58.5,236.5" />
+        <EdgeLayout
+          Id="Package\Upsert Lookup.Paths[Lookup No Match Output1]"
+          TopLeft="371.5,180.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-227.5,56"
+              Start="0,0"
+              End="-227.5,48.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,24" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,24"
+                    Point2="0,28"
+                    Point3="-4,28" />
+                  <mssgle:LineSegment
+                    End="-223.5,28" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-223.5,28"
+                    Point2="-227.5,28"
+                    Point3="-227.5,32" />
+                  <mssgle:LineSegment
+                    End="-227.5,48.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-169.55638671875,33,111.6127734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="166,42"
+          Id="Package\Upsert Lookup\OLE DB Command"
+          TopLeft="478.5,236.21320754717" />
+        <EdgeLayout
+          Id="Package\Upsert Lookup.Paths[Lookup Match Output]"
+          TopLeft="390.5,180.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="171,55.7132075471698"
+              Start="0,0"
+              End="171,48.2132075471698">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,18.7180069609819" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,18.7180069609819"
+                    Point2="0,22.7180069609819"
+                    Point3="4,22.7180069609819" />
+                  <mssgle:LineSegment
+                    End="167,22.7180069609819" />
+                  <mssgle:CubicBezierSegment
+                    Point1="167,22.7180069609819"
+                    Point2="171,22.7180069609819"
+                    Point3="171,26.7180069609819" />
+                  <mssgle:LineSegment
+                    End="171,48.2132075471698" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="37.30861328125,27.7180069609819,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Upsert Lookup\OLE DB Source">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Upsert Lookup\Lookup">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:boolean">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string">[dbo].[dimProductSubCategory]</Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:int">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Upsert Lookup\Lookup 1">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:boolean">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string">[dbo].[dimProductSubCategory]</Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:int">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Upsert Lookup\OLE DB Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

@@ -1,0 +1,2319 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="6/21/2022 11:52:01 AM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="LAPTOP-4DUNKJCJ"
+  DTS:CreatorName="LAPTOP-4DUNKJCJ\1333"
+  DTS:DTSID="{4B6E3FE7-FC7B-4E69-9591-54C6878B4890}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="15.0.2000.180"
+  DTS:LocaleID="14345"
+  DTS:ObjectName="dimPromotion"
+  DTS:PackageType="5"
+  DTS:VersionBuild="8"
+  DTS:VersionGUID="{50625EDD-0953-449F-B091-2F5785614B3F}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{1B25D905-EB0F-498E-9601-EAF393E5ECF1}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="vMaxCreateDate">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+    <DTS:Variable
+      DTS:CreationName=""
+      DTS:DTSID="{9F1914DF-B20D-4DA8-842B-4992301B5965}"
+      DTS:IncludeInDebugDump="2345"
+      DTS:Namespace="User"
+      DTS:ObjectName="vMaxModifiedDate">
+      <DTS:VariableValue
+        DTS:DataType="8"
+        xml:space="preserve"></DTS:VariableValue>
+    </DTS:Variable>
+  </DTS:Variables>
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Create table dimPromotion"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{15322F38-FFEA-4A99-94C6-94D7281526A2}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Create table dimPromotion"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{D180EDF5-9DA8-4232-9307-5EF87C1BA49B}"
+          SQLTask:SqlStatementSource="IF NOT EXISTS(SELECT * FROM SYSOBJECTS WHERE NAME = 'dimPromotion' AND XTYPE = 'U')&#xA;BEGIN&#xA;CREATE TABLE [dbo].[dimPromotion](&#xA;&#x9;[PromotionKey] [int] PRIMARY KEY,&#xA;&#x9;[PromotionAlternateKey] [int] NULL,&#xA;&#x9;[EnglishPromotionName] [nvarchar](255) NULL,&#xA;&#x9;[SpanishPromotionName] [nvarchar](255) NULL,&#xA;&#x9;[FrenchPromotionName] [nvarchar](255) NULL,&#xA;&#x9;[DiscountPct] [decimal](18,2) NULL,&#xA;&#x9;[EnglishPromotionType] [nvarchar](255) NULL,&#xA;&#x9;[SpanishPromotionType] [nvarchar](255) NULL,&#xA;&#x9;[FrenchPromotionType] [nvarchar](255) NULL,&#xA;&#x9;[EnglishPromotionCategory] [nvarchar](255) NULL,&#xA;&#x9;[SpanishPromotionCategory] [nvarchar](255) NULL,&#xA;&#x9;[FrenchPromotionCategory] [nvarchar](255) NULL,&#xA;&#x9;[StartDate] [nvarchar](255) NULL,&#xA;&#x9;[EndDate] [nvarchar](255) NULL,&#xA;&#x9;[MinQty] [int] NULL,&#xA;&#x9;[MaxQty] [int] NULL,&#xA;&#x9;[CreateDate] [datetime] NULL,&#xA;&#x9;[ModifiedDate] [datetime] NULL,&#xA;&#x9;[ETLDate] [datetime] NULL&#xA;) &#xA;END" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\GetMaxDate"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{9863521e-ac72-4883-ad84-de048c2d9f19}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="GetMaxDate"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:PropertyExpression
+        DTS:Name="SqlStatementSource">"SELECT ISNULL(CONVERT(VARCHAR, MAX(CreateDate),121),'1900-01-01') AS MaxCreateDate
+	,ISNULL(CONVERT(VARCHAR, MAX(ModifiedDate),121),'1900-01-01') AS MaxModifiedDate
+FROM "+ @[System::PackageName] +""</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{D180EDF5-9DA8-4232-9307-5EF87C1BA49B}"
+          SQLTask:SqlStatementSource="SELECT ISNULL(CONVERT(VARCHAR, MAX(CreateDate),121),'1900-01-01') AS MaxCreateDate&#xA;&#x9;,ISNULL(CONVERT(VARCHAR, MAX(ModifiedDate),121),'1900-01-01') AS MaxModifiedDate&#xA;FROM dimPromotion"
+          SQLTask:ResultType="ResultSetType_SingleRow" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask">
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="MaxCreateDate"
+            SQLTask:DtsVariableName="User::vMaxCreateDate" />
+          <SQLTask:ResultBinding
+            SQLTask:ResultName="MaxModifiedDate"
+            SQLTask:DtsVariableName="User::vMaxModifiedDate" />
+        </SQLTask:SqlTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Insert"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{22CD123F-DBD1-4FD5-94A4-E57E2D404745}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Insert"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\Insert\Derived Column"
+              componentClassID="Microsoft.DerivedColumn"
+              contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+              description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+              name="Derived Column"
+              usesDispositions="true">
+              <inputs>
+                <input
+                  refId="Package\Insert\Derived Column.Inputs[Derived Column Input]"
+                  description="Input to the Derived Column Transformation"
+                  name="Derived Column Input">
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Insert\Derived Column.Outputs[Derived Column Output]"
+                  description="Default Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  name="Derived Column Output"
+                  synchronousInputId="Package\Insert\Derived Column.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Insert\Derived Column.Outputs[Derived Column Output].Columns[ETLDate]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Computation"
+                      errorRowDisposition="FailComponent"
+                      lineageId="Package\Insert\Derived Column.Outputs[Derived Column Output].Columns[ETLDate]"
+                      name="ETLDate"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Expression"
+                          name="Expression">[GETDATE]()</property>
+                        <property
+                          containsID="true"
+                          dataType="System.String"
+                          description="Derived Column Friendly Expression"
+                          expressionType="Notify"
+                          name="FriendlyExpression">GETDATE()</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Insert\Derived Column.Outputs[Derived Column Error Output]"
+                  description="Error Output of the Derived Column Transformation"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Derived Column Error Output"
+                  synchronousInputId="Package\Insert\Derived Column.Inputs[Derived Column Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Insert\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Insert\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Insert\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Insert\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Insert\OLE DB Destination"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="OLE DB Destination"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[dimPromotion]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Insert\OLE DB Destination.Connections[OleDbConnection]"
+                  connectionManagerID="{D180EDF5-9DA8-4232-9307-5EF87C1BA49B}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[LAPTOP-4DUNKJCJ.BIDWH]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[PromotionKey]"
+                      cachedDataType="r8"
+                      cachedName="PromotionKey"
+                      externalMetadataColumnId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[PromotionKey]"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[PromotionKey]" />
+                    <inputColumn
+                      refId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[PromotionAlternateKey]"
+                      cachedDataType="r8"
+                      cachedName="PromotionAlternateKey"
+                      externalMetadataColumnId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[PromotionAlternateKey]"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[PromotionAlternateKey]" />
+                    <inputColumn
+                      refId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[EnglishPromotionName]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="EnglishPromotionName"
+                      externalMetadataColumnId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[EnglishPromotionName]"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[EnglishPromotionName]" />
+                    <inputColumn
+                      refId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[SpanishPromotionName]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="SpanishPromotionName"
+                      externalMetadataColumnId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[SpanishPromotionName]"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[SpanishPromotionName]" />
+                    <inputColumn
+                      refId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[FrenchPromotionName]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="FrenchPromotionName"
+                      externalMetadataColumnId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[FrenchPromotionName]"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[FrenchPromotionName]" />
+                    <inputColumn
+                      refId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[DiscountPct]"
+                      cachedDataType="r8"
+                      cachedName="DiscountPct"
+                      externalMetadataColumnId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[DiscountPct]"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[DiscountPct]" />
+                    <inputColumn
+                      refId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[EnglishPromotionType]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="EnglishPromotionType"
+                      externalMetadataColumnId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[EnglishPromotionType]"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[EnglishPromotionType]" />
+                    <inputColumn
+                      refId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[SpanishPromotionType]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="SpanishPromotionType"
+                      externalMetadataColumnId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[SpanishPromotionType]"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[SpanishPromotionType]" />
+                    <inputColumn
+                      refId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[FrenchPromotionType]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="FrenchPromotionType"
+                      externalMetadataColumnId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[FrenchPromotionType]"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[FrenchPromotionType]" />
+                    <inputColumn
+                      refId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[EnglishPromotionCategory]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="EnglishPromotionCategory"
+                      externalMetadataColumnId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[EnglishPromotionCategory]"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[EnglishPromotionCategory]" />
+                    <inputColumn
+                      refId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[SpanishPromotionCategory]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="SpanishPromotionCategory"
+                      externalMetadataColumnId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[SpanishPromotionCategory]"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[SpanishPromotionCategory]" />
+                    <inputColumn
+                      refId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[FrenchPromotionCategory]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="FrenchPromotionCategory"
+                      externalMetadataColumnId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[FrenchPromotionCategory]"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[FrenchPromotionCategory]" />
+                    <inputColumn
+                      refId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[StartDate]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="StartDate"
+                      externalMetadataColumnId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[StartDate]"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[StartDate]" />
+                    <inputColumn
+                      refId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[EndDate]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="EndDate"
+                      externalMetadataColumnId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[EndDate]"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[EndDate]" />
+                    <inputColumn
+                      refId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[MinQty]"
+                      cachedDataType="r8"
+                      cachedName="MinQty"
+                      externalMetadataColumnId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[MinQty]"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[MinQty]" />
+                    <inputColumn
+                      refId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[MaxQty]"
+                      cachedDataType="r8"
+                      cachedName="MaxQty"
+                      externalMetadataColumnId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[MaxQty]"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[MaxQty]" />
+                    <inputColumn
+                      refId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[CreateDate]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="CreateDate"
+                      externalMetadataColumnId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CreateDate]"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[CreateDate]" />
+                    <inputColumn
+                      refId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[ModifiedDate]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="ModifiedDate"
+                      externalMetadataColumnId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ModifiedDate]"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[ModifiedDate]" />
+                    <inputColumn
+                      refId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[ETLDate]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="ETLDate"
+                      externalMetadataColumnId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ETLDate]"
+                      lineageId="Package\Insert\Derived Column.Outputs[Derived Column Output].Columns[ETLDate]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[PromotionKey]"
+                      dataType="i4"
+                      name="PromotionKey" />
+                    <externalMetadataColumn
+                      refId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[PromotionAlternateKey]"
+                      dataType="i4"
+                      name="PromotionAlternateKey" />
+                    <externalMetadataColumn
+                      refId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[EnglishPromotionName]"
+                      dataType="wstr"
+                      length="255"
+                      name="EnglishPromotionName" />
+                    <externalMetadataColumn
+                      refId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[SpanishPromotionName]"
+                      dataType="wstr"
+                      length="255"
+                      name="SpanishPromotionName" />
+                    <externalMetadataColumn
+                      refId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[FrenchPromotionName]"
+                      dataType="wstr"
+                      length="255"
+                      name="FrenchPromotionName" />
+                    <externalMetadataColumn
+                      refId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[DiscountPct]"
+                      dataType="numeric"
+                      name="DiscountPct"
+                      precision="18"
+                      scale="2" />
+                    <externalMetadataColumn
+                      refId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[EnglishPromotionType]"
+                      dataType="wstr"
+                      length="255"
+                      name="EnglishPromotionType" />
+                    <externalMetadataColumn
+                      refId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[SpanishPromotionType]"
+                      dataType="wstr"
+                      length="255"
+                      name="SpanishPromotionType" />
+                    <externalMetadataColumn
+                      refId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[FrenchPromotionType]"
+                      dataType="wstr"
+                      length="255"
+                      name="FrenchPromotionType" />
+                    <externalMetadataColumn
+                      refId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[EnglishPromotionCategory]"
+                      dataType="wstr"
+                      length="255"
+                      name="EnglishPromotionCategory" />
+                    <externalMetadataColumn
+                      refId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[SpanishPromotionCategory]"
+                      dataType="wstr"
+                      length="255"
+                      name="SpanishPromotionCategory" />
+                    <externalMetadataColumn
+                      refId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[FrenchPromotionCategory]"
+                      dataType="wstr"
+                      length="255"
+                      name="FrenchPromotionCategory" />
+                    <externalMetadataColumn
+                      refId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[StartDate]"
+                      dataType="wstr"
+                      length="255"
+                      name="StartDate" />
+                    <externalMetadataColumn
+                      refId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[EndDate]"
+                      dataType="wstr"
+                      length="255"
+                      name="EndDate" />
+                    <externalMetadataColumn
+                      refId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[MinQty]"
+                      dataType="i4"
+                      name="MinQty" />
+                    <externalMetadataColumn
+                      refId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[MaxQty]"
+                      dataType="i4"
+                      name="MaxQty" />
+                    <externalMetadataColumn
+                      refId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CreateDate]"
+                      dataType="dbTimeStamp"
+                      name="CreateDate" />
+                    <externalMetadataColumn
+                      refId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ModifiedDate]"
+                      dataType="dbTimeStamp"
+                      name="ModifiedDate" />
+                    <externalMetadataColumn
+                      refId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ETLDate]"
+                      dataType="dbTimeStamp"
+                      name="ETLDate" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Insert\OLE DB Destination.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Insert\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Insert\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Insert\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Insert\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Insert\OLE DB Source"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="OLE DB Source"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [PromotionKey]
+      ,[PromotionAlternateKey]
+      ,[EnglishPromotionName]
+      ,[SpanishPromotionName]
+      ,[FrenchPromotionName]
+      ,REPLACE([DiscountPct],',','.') AS [DiscountPct]
+      ,[EnglishPromotionType]
+      ,[SpanishPromotionType]
+      ,[FrenchPromotionType]
+      ,[EnglishPromotionCategory]
+      ,[SpanishPromotionCategory]
+      ,[FrenchPromotionCategory]
+      ,[StartDate]
+      ,[EndDate]
+      ,[MinQty]
+      ,[MaxQty]
+      ,[CreateDate]
+      ,[ModifiedDate]
+      ,[ETLDate]
+  FROM [dbo].[stgPromotion]
+WHERE CONVERT(VARCHAR, CreateDate, 121) &gt;?</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping">"Parameter0:Input",{1B25D905-EB0F-498E-9601-EAF393E5ECF1};</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Insert\OLE DB Source.Connections[OleDbConnection]"
+                  connectionManagerID="{D180EDF5-9DA8-4232-9307-5EF87C1BA49B}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[LAPTOP-4DUNKJCJ.BIDWH]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[PromotionKey]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[PromotionKey]"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[PromotionKey]"
+                      name="PromotionKey"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[PromotionAlternateKey]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[PromotionAlternateKey]"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[PromotionAlternateKey]"
+                      name="PromotionAlternateKey"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[EnglishPromotionName]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[EnglishPromotionName]"
+                      length="255"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[EnglishPromotionName]"
+                      name="EnglishPromotionName"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[SpanishPromotionName]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[SpanishPromotionName]"
+                      length="255"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[SpanishPromotionName]"
+                      name="SpanishPromotionName"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[FrenchPromotionName]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[FrenchPromotionName]"
+                      length="255"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[FrenchPromotionName]"
+                      name="FrenchPromotionName"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[DiscountPct]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[DiscountPct]"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[DiscountPct]"
+                      name="DiscountPct"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[EnglishPromotionType]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[EnglishPromotionType]"
+                      length="255"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[EnglishPromotionType]"
+                      name="EnglishPromotionType"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[SpanishPromotionType]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[SpanishPromotionType]"
+                      length="255"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[SpanishPromotionType]"
+                      name="SpanishPromotionType"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[FrenchPromotionType]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[FrenchPromotionType]"
+                      length="255"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[FrenchPromotionType]"
+                      name="FrenchPromotionType"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[EnglishPromotionCategory]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[EnglishPromotionCategory]"
+                      length="255"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[EnglishPromotionCategory]"
+                      name="EnglishPromotionCategory"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[SpanishPromotionCategory]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[SpanishPromotionCategory]"
+                      length="255"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[SpanishPromotionCategory]"
+                      name="SpanishPromotionCategory"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[FrenchPromotionCategory]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[FrenchPromotionCategory]"
+                      length="255"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[FrenchPromotionCategory]"
+                      name="FrenchPromotionCategory"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[StartDate]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[StartDate]"
+                      length="255"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[StartDate]"
+                      name="StartDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[EndDate]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[EndDate]"
+                      length="255"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[EndDate]"
+                      name="EndDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[MinQty]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[MinQty]"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[MinQty]"
+                      name="MinQty"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[MaxQty]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[MaxQty]"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[MaxQty]"
+                      name="MaxQty"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[CreateDate]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[CreateDate]"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[CreateDate]"
+                      name="CreateDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[ModifiedDate]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ModifiedDate]"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[ModifiedDate]"
+                      name="ModifiedDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[ETLDate]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ETLDate]"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].Columns[ETLDate]"
+                      name="ETLDate"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[PromotionKey]"
+                      dataType="r8"
+                      name="PromotionKey" />
+                    <externalMetadataColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[PromotionAlternateKey]"
+                      dataType="r8"
+                      name="PromotionAlternateKey" />
+                    <externalMetadataColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[EnglishPromotionName]"
+                      dataType="wstr"
+                      length="255"
+                      name="EnglishPromotionName" />
+                    <externalMetadataColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[SpanishPromotionName]"
+                      dataType="wstr"
+                      length="255"
+                      name="SpanishPromotionName" />
+                    <externalMetadataColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[FrenchPromotionName]"
+                      dataType="wstr"
+                      length="255"
+                      name="FrenchPromotionName" />
+                    <externalMetadataColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[DiscountPct]"
+                      codePage="1252"
+                      dataType="str"
+                      length="8000"
+                      name="DiscountPct" />
+                    <externalMetadataColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[EnglishPromotionType]"
+                      dataType="wstr"
+                      length="255"
+                      name="EnglishPromotionType" />
+                    <externalMetadataColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[SpanishPromotionType]"
+                      dataType="wstr"
+                      length="255"
+                      name="SpanishPromotionType" />
+                    <externalMetadataColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[FrenchPromotionType]"
+                      dataType="wstr"
+                      length="255"
+                      name="FrenchPromotionType" />
+                    <externalMetadataColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[EnglishPromotionCategory]"
+                      dataType="wstr"
+                      length="255"
+                      name="EnglishPromotionCategory" />
+                    <externalMetadataColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[SpanishPromotionCategory]"
+                      dataType="wstr"
+                      length="255"
+                      name="SpanishPromotionCategory" />
+                    <externalMetadataColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[FrenchPromotionCategory]"
+                      dataType="wstr"
+                      length="255"
+                      name="FrenchPromotionCategory" />
+                    <externalMetadataColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[StartDate]"
+                      dataType="wstr"
+                      length="255"
+                      name="StartDate" />
+                    <externalMetadataColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[EndDate]"
+                      dataType="wstr"
+                      length="255"
+                      name="EndDate" />
+                    <externalMetadataColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[MinQty]"
+                      dataType="r8"
+                      name="MinQty" />
+                    <externalMetadataColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[MaxQty]"
+                      dataType="r8"
+                      name="MaxQty" />
+                    <externalMetadataColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[CreateDate]"
+                      dataType="dbTimeStamp"
+                      name="CreateDate" />
+                    <externalMetadataColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ModifiedDate]"
+                      dataType="dbTimeStamp"
+                      name="ModifiedDate" />
+                    <externalMetadataColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ETLDate]"
+                      dataType="dbTimeStamp"
+                      name="ETLDate" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[PromotionKey]"
+                      dataType="r8"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[PromotionKey]"
+                      name="PromotionKey" />
+                    <outputColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[PromotionAlternateKey]"
+                      dataType="r8"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[PromotionAlternateKey]"
+                      name="PromotionAlternateKey" />
+                    <outputColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[EnglishPromotionName]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[EnglishPromotionName]"
+                      name="EnglishPromotionName" />
+                    <outputColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[SpanishPromotionName]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[SpanishPromotionName]"
+                      name="SpanishPromotionName" />
+                    <outputColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[FrenchPromotionName]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[FrenchPromotionName]"
+                      name="FrenchPromotionName" />
+                    <outputColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[DiscountPct]"
+                      codePage="1252"
+                      dataType="str"
+                      length="8000"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[DiscountPct]"
+                      name="DiscountPct" />
+                    <outputColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[EnglishPromotionType]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[EnglishPromotionType]"
+                      name="EnglishPromotionType" />
+                    <outputColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[SpanishPromotionType]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[SpanishPromotionType]"
+                      name="SpanishPromotionType" />
+                    <outputColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[FrenchPromotionType]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[FrenchPromotionType]"
+                      name="FrenchPromotionType" />
+                    <outputColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[EnglishPromotionCategory]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[EnglishPromotionCategory]"
+                      name="EnglishPromotionCategory" />
+                    <outputColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[SpanishPromotionCategory]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[SpanishPromotionCategory]"
+                      name="SpanishPromotionCategory" />
+                    <outputColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[FrenchPromotionCategory]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[FrenchPromotionCategory]"
+                      name="FrenchPromotionCategory" />
+                    <outputColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[StartDate]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[StartDate]"
+                      name="StartDate" />
+                    <outputColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[EndDate]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[EndDate]"
+                      name="EndDate" />
+                    <outputColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[MinQty]"
+                      dataType="r8"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[MinQty]"
+                      name="MinQty" />
+                    <outputColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[MaxQty]"
+                      dataType="r8"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[MaxQty]"
+                      name="MaxQty" />
+                    <outputColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[CreateDate]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[CreateDate]"
+                      name="CreateDate" />
+                    <outputColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ModifiedDate]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ModifiedDate]"
+                      name="ModifiedDate" />
+                    <outputColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ETLDate]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ETLDate]"
+                      name="ETLDate" />
+                    <outputColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Insert.Paths[Derived Column Output]"
+              endId="Package\Insert\OLE DB Destination.Inputs[OLE DB Destination Input]"
+              name="Derived Column Output"
+              startId="Package\Insert\Derived Column.Outputs[Derived Column Output]" />
+            <path
+              refId="Package\Insert.Paths[OLE DB Source Output]"
+              endId="Package\Insert\Derived Column.Inputs[Derived Column Input]"
+              name="OLE DB Source Output"
+              startId="Package\Insert\OLE DB Source.Outputs[OLE DB Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Insert Unknown and Not Available"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{0F4ACE17-2441-43A9-BBD5-81EE3130CD5E}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Insert Unknown and Not Available"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{D180EDF5-9DA8-4232-9307-5EF87C1BA49B}"
+          SQLTask:SqlStatementSource="IF NOT EXISTS(SELECT * FROM dimPromotion WHERE PromotionKey IN ('-2'))&#xA;BEGIN&#xA;INSERT INTO dimPromotion VALUES(&#xA;&#x9;'-2','-2', 'Unknown', 'Unknown', 'Unknown','-2', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown'&#xA;&#x9;, 'Unknown','-2','-2','1901-01-01 00:00:00.000','1901-01-01 00:00:00.000','1901-01-01 00:00:00.000'&#xA;)&#xA;END&#xA;IF NOT EXISTS(SELECT * FROM dimPromotion WHERE PromotionKey IN ('-1'))&#xA;BEGIN&#xA;INSERT INTO dimPromotion VALUES(&#xA;&#x9;'-1','-1', 'Not Available', 'Not Available', 'Not Available','-2', 'Not Available', 'Not Available', 'Not Available'&#xA;&#x9;, 'Not Available', 'Not Available', 'Not Available', 'Not Available', 'Not Available','-1','-1'&#xA;&#x9;,'1901-01-01 00:00:00.000','1901-01-01 00:00:00.000','1901-01-01 00:00:00.000'&#xA;)&#xA;END" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Update"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{C7582B84-7377-41AA-B79F-C4060836AED4}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Update"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\Update\OLE DB Command"
+              componentClassID="Microsoft.OLEDBCommand"
+              contactInfo="OLE DB Command;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;2"
+              description="Runs an SQL statement for each row in a data flow. For example, call a 'new employee setup' stored procedure for each row in the 'new employees' table. Note: running an SQL statement for each row of a large data flow may take a long time."
+              name="OLE DB Command"
+              usesDispositions="true"
+              version="2">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">UPDATE dimPromotion SET
+       [PromotionAlternateKey]=?
+      ,[EnglishPromotionName]=?
+      ,[SpanishPromotionName]=?
+      ,[FrenchPromotionName]=?
+      ,[DiscountPct]=?
+      ,[EnglishPromotionType]=?
+      ,[SpanishPromotionType]=?
+      ,[FrenchPromotionType]=?
+      ,[EnglishPromotionCategory]=?
+      ,[SpanishPromotionCategory]=?
+      ,[FrenchPromotionCategory]=?
+      ,[StartDate]=?
+      ,[EndDate]=?
+      ,[MinQty]=?
+      ,[MaxQty]=?
+      ,[CreateDate]=?
+      ,[ModifiedDate]=?
+      ,[ETLDate]=GETDATE()
+WHERE [PromotionKey] = ?</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Update\OLE DB Command.Connections[OleDbConnection]"
+                  connectionManagerID="{D180EDF5-9DA8-4232-9307-5EF87C1BA49B}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[LAPTOP-4DUNKJCJ.BIDWH]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input]"
+                  errorOrTruncationOperation="Command Execution"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Command Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].Columns[PromotionKey]"
+                      cachedDataType="r8"
+                      cachedName="PromotionKey"
+                      externalMetadataColumnId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_17]"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[PromotionKey]" />
+                    <inputColumn
+                      refId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].Columns[PromotionAlternateKey]"
+                      cachedDataType="r8"
+                      cachedName="PromotionAlternateKey"
+                      externalMetadataColumnId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_0]"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[PromotionAlternateKey]" />
+                    <inputColumn
+                      refId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].Columns[EnglishPromotionName]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="EnglishPromotionName"
+                      externalMetadataColumnId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_1]"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[EnglishPromotionName]" />
+                    <inputColumn
+                      refId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].Columns[SpanishPromotionName]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="SpanishPromotionName"
+                      externalMetadataColumnId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_2]"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[SpanishPromotionName]" />
+                    <inputColumn
+                      refId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].Columns[FrenchPromotionName]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="FrenchPromotionName"
+                      externalMetadataColumnId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_3]"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[FrenchPromotionName]" />
+                    <inputColumn
+                      refId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].Columns[DiscountPct]"
+                      cachedDataType="r8"
+                      cachedName="DiscountPct"
+                      externalMetadataColumnId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_4]"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[DiscountPct]" />
+                    <inputColumn
+                      refId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].Columns[EnglishPromotionType]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="EnglishPromotionType"
+                      externalMetadataColumnId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_5]"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[EnglishPromotionType]" />
+                    <inputColumn
+                      refId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].Columns[SpanishPromotionType]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="SpanishPromotionType"
+                      externalMetadataColumnId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_6]"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[SpanishPromotionType]" />
+                    <inputColumn
+                      refId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].Columns[FrenchPromotionType]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="FrenchPromotionType"
+                      externalMetadataColumnId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_7]"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[FrenchPromotionType]" />
+                    <inputColumn
+                      refId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].Columns[EnglishPromotionCategory]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="EnglishPromotionCategory"
+                      externalMetadataColumnId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_8]"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[EnglishPromotionCategory]" />
+                    <inputColumn
+                      refId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].Columns[SpanishPromotionCategory]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="SpanishPromotionCategory"
+                      externalMetadataColumnId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_9]"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[SpanishPromotionCategory]" />
+                    <inputColumn
+                      refId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].Columns[FrenchPromotionCategory]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="FrenchPromotionCategory"
+                      externalMetadataColumnId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_10]"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[FrenchPromotionCategory]" />
+                    <inputColumn
+                      refId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].Columns[StartDate]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="StartDate"
+                      externalMetadataColumnId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_11]"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[StartDate]" />
+                    <inputColumn
+                      refId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].Columns[EndDate]"
+                      cachedDataType="wstr"
+                      cachedLength="255"
+                      cachedName="EndDate"
+                      externalMetadataColumnId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_12]"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[EndDate]" />
+                    <inputColumn
+                      refId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].Columns[MinQty]"
+                      cachedDataType="r8"
+                      cachedName="MinQty"
+                      externalMetadataColumnId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_13]"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[MinQty]" />
+                    <inputColumn
+                      refId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].Columns[MaxQty]"
+                      cachedDataType="r8"
+                      cachedName="MaxQty"
+                      externalMetadataColumnId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_14]"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[MaxQty]" />
+                    <inputColumn
+                      refId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].Columns[CreateDate]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="CreateDate"
+                      externalMetadataColumnId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_15]"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[CreateDate]" />
+                    <inputColumn
+                      refId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].Columns[ModifiedDate]"
+                      cachedDataType="dbTimeStamp"
+                      cachedName="ModifiedDate"
+                      externalMetadataColumnId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_16]"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[ModifiedDate]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_0]"
+                      dataType="i4"
+                      name="Param_0">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">81</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_1]"
+                      dataType="wstr"
+                      length="255"
+                      name="Param_1">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_2]"
+                      dataType="wstr"
+                      length="255"
+                      name="Param_2">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_3]"
+                      dataType="wstr"
+                      length="255"
+                      name="Param_3">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_4]"
+                      dataType="numeric"
+                      name="Param_4"
+                      precision="18"
+                      scale="2">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">81</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_5]"
+                      dataType="wstr"
+                      length="255"
+                      name="Param_5">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_6]"
+                      dataType="wstr"
+                      length="255"
+                      name="Param_6">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_7]"
+                      dataType="wstr"
+                      length="255"
+                      name="Param_7">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_8]"
+                      dataType="wstr"
+                      length="255"
+                      name="Param_8">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_9]"
+                      dataType="wstr"
+                      length="255"
+                      name="Param_9">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_10]"
+                      dataType="wstr"
+                      length="255"
+                      name="Param_10">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_11]"
+                      dataType="wstr"
+                      length="255"
+                      name="Param_11">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_12]"
+                      dataType="wstr"
+                      length="255"
+                      name="Param_12">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_13]"
+                      dataType="i4"
+                      name="Param_13">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">81</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_14]"
+                      dataType="i4"
+                      name="Param_14">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">81</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_15]"
+                      dataType="dbTimeStamp"
+                      name="Param_15">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_16]"
+                      dataType="dbTimeStamp"
+                      name="Param_16">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">65</property>
+                      </properties>
+                    </externalMetadataColumn>
+                    <externalMetadataColumn
+                      refId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input].ExternalColumns[Param_17]"
+                      dataType="i4"
+                      name="Param_17">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="Parameter information.  Matches OLE DB's DBPARAMFLAGSENUM values."
+                          name="DBParamInfoFlags">81</property>
+                      </properties>
+                    </externalMetadataColumn>
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Update\OLE DB Command.Outputs[OLE DB Command Output]"
+                  exclusionGroup="1"
+                  name="OLE DB Command Output"
+                  synchronousInputId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Update\OLE DB Command.Outputs[OLE DB Command Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Command Error Output"
+                  synchronousInputId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Update\OLE DB Command.Outputs[OLE DB Command Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Update\OLE DB Command.Outputs[OLE DB Command Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Update\OLE DB Command.Outputs[OLE DB Command Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Update\OLE DB Command.Outputs[OLE DB Command Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Update\OLE DB Source"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="OLE DB Source"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT [PromotionKey]
+      ,[PromotionAlternateKey]
+      ,[EnglishPromotionName]
+      ,[SpanishPromotionName]
+      ,[FrenchPromotionName]
+      ,REPLACE([DiscountPct],',','.') AS [DiscountPct]
+      ,[EnglishPromotionType]
+      ,[SpanishPromotionType]
+      ,[FrenchPromotionType]
+      ,[EnglishPromotionCategory]
+      ,[SpanishPromotionCategory]
+      ,[FrenchPromotionCategory]
+      ,[StartDate]
+      ,[EndDate]
+      ,[MinQty]
+      ,[MaxQty]
+      ,[CreateDate]
+      ,[ModifiedDate]
+      ,[ETLDate]
+  FROM [dbo].[stgPromotion]
+WHERE CONVERT(VARCHAR, CreateDate,121 )&lt;=? AND
+CONVERT(VARCHAR, ModifiedDate,121)&gt;?</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping">"Parameter0:Input",{1B25D905-EB0F-498E-9601-EAF393E5ECF1};"Parameter1:Input",{9F1914DF-B20D-4DA8-842B-4992301B5965};</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Update\OLE DB Source.Connections[OleDbConnection]"
+                  connectionManagerID="{D180EDF5-9DA8-4232-9307-5EF87C1BA49B}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[LAPTOP-4DUNKJCJ.BIDWH]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[PromotionKey]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[PromotionKey]"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[PromotionKey]"
+                      name="PromotionKey"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[PromotionAlternateKey]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[PromotionAlternateKey]"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[PromotionAlternateKey]"
+                      name="PromotionAlternateKey"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[EnglishPromotionName]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[EnglishPromotionName]"
+                      length="255"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[EnglishPromotionName]"
+                      name="EnglishPromotionName"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[SpanishPromotionName]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[SpanishPromotionName]"
+                      length="255"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[SpanishPromotionName]"
+                      name="SpanishPromotionName"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[FrenchPromotionName]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[FrenchPromotionName]"
+                      length="255"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[FrenchPromotionName]"
+                      name="FrenchPromotionName"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[DiscountPct]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[DiscountPct]"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[DiscountPct]"
+                      name="DiscountPct"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[EnglishPromotionType]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[EnglishPromotionType]"
+                      length="255"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[EnglishPromotionType]"
+                      name="EnglishPromotionType"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[SpanishPromotionType]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[SpanishPromotionType]"
+                      length="255"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[SpanishPromotionType]"
+                      name="SpanishPromotionType"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[FrenchPromotionType]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[FrenchPromotionType]"
+                      length="255"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[FrenchPromotionType]"
+                      name="FrenchPromotionType"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[EnglishPromotionCategory]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[EnglishPromotionCategory]"
+                      length="255"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[EnglishPromotionCategory]"
+                      name="EnglishPromotionCategory"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[SpanishPromotionCategory]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[SpanishPromotionCategory]"
+                      length="255"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[SpanishPromotionCategory]"
+                      name="SpanishPromotionCategory"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[FrenchPromotionCategory]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[FrenchPromotionCategory]"
+                      length="255"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[FrenchPromotionCategory]"
+                      name="FrenchPromotionCategory"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[StartDate]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[StartDate]"
+                      length="255"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[StartDate]"
+                      name="StartDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[EndDate]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[EndDate]"
+                      length="255"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[EndDate]"
+                      name="EndDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[MinQty]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[MinQty]"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[MinQty]"
+                      name="MinQty"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[MaxQty]"
+                      dataType="r8"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[MaxQty]"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[MaxQty]"
+                      name="MaxQty"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[CreateDate]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[CreateDate]"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[CreateDate]"
+                      name="CreateDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[ModifiedDate]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ModifiedDate]"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[ModifiedDate]"
+                      name="ModifiedDate"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[ETLDate]"
+                      dataType="dbTimeStamp"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ETLDate]"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].Columns[ETLDate]"
+                      name="ETLDate"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[PromotionKey]"
+                      dataType="r8"
+                      name="PromotionKey" />
+                    <externalMetadataColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[PromotionAlternateKey]"
+                      dataType="r8"
+                      name="PromotionAlternateKey" />
+                    <externalMetadataColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[EnglishPromotionName]"
+                      dataType="wstr"
+                      length="255"
+                      name="EnglishPromotionName" />
+                    <externalMetadataColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[SpanishPromotionName]"
+                      dataType="wstr"
+                      length="255"
+                      name="SpanishPromotionName" />
+                    <externalMetadataColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[FrenchPromotionName]"
+                      dataType="wstr"
+                      length="255"
+                      name="FrenchPromotionName" />
+                    <externalMetadataColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[DiscountPct]"
+                      codePage="1252"
+                      dataType="str"
+                      length="8000"
+                      name="DiscountPct" />
+                    <externalMetadataColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[EnglishPromotionType]"
+                      dataType="wstr"
+                      length="255"
+                      name="EnglishPromotionType" />
+                    <externalMetadataColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[SpanishPromotionType]"
+                      dataType="wstr"
+                      length="255"
+                      name="SpanishPromotionType" />
+                    <externalMetadataColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[FrenchPromotionType]"
+                      dataType="wstr"
+                      length="255"
+                      name="FrenchPromotionType" />
+                    <externalMetadataColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[EnglishPromotionCategory]"
+                      dataType="wstr"
+                      length="255"
+                      name="EnglishPromotionCategory" />
+                    <externalMetadataColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[SpanishPromotionCategory]"
+                      dataType="wstr"
+                      length="255"
+                      name="SpanishPromotionCategory" />
+                    <externalMetadataColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[FrenchPromotionCategory]"
+                      dataType="wstr"
+                      length="255"
+                      name="FrenchPromotionCategory" />
+                    <externalMetadataColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[StartDate]"
+                      dataType="wstr"
+                      length="255"
+                      name="StartDate" />
+                    <externalMetadataColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[EndDate]"
+                      dataType="wstr"
+                      length="255"
+                      name="EndDate" />
+                    <externalMetadataColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[MinQty]"
+                      dataType="r8"
+                      name="MinQty" />
+                    <externalMetadataColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[MaxQty]"
+                      dataType="r8"
+                      name="MaxQty" />
+                    <externalMetadataColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[CreateDate]"
+                      dataType="dbTimeStamp"
+                      name="CreateDate" />
+                    <externalMetadataColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ModifiedDate]"
+                      dataType="dbTimeStamp"
+                      name="ModifiedDate" />
+                    <externalMetadataColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output].ExternalColumns[ETLDate]"
+                      dataType="dbTimeStamp"
+                      name="ETLDate" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[PromotionKey]"
+                      dataType="r8"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[PromotionKey]"
+                      name="PromotionKey" />
+                    <outputColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[PromotionAlternateKey]"
+                      dataType="r8"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[PromotionAlternateKey]"
+                      name="PromotionAlternateKey" />
+                    <outputColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[EnglishPromotionName]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[EnglishPromotionName]"
+                      name="EnglishPromotionName" />
+                    <outputColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[SpanishPromotionName]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[SpanishPromotionName]"
+                      name="SpanishPromotionName" />
+                    <outputColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[FrenchPromotionName]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[FrenchPromotionName]"
+                      name="FrenchPromotionName" />
+                    <outputColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[DiscountPct]"
+                      codePage="1252"
+                      dataType="str"
+                      length="8000"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[DiscountPct]"
+                      name="DiscountPct" />
+                    <outputColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[EnglishPromotionType]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[EnglishPromotionType]"
+                      name="EnglishPromotionType" />
+                    <outputColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[SpanishPromotionType]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[SpanishPromotionType]"
+                      name="SpanishPromotionType" />
+                    <outputColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[FrenchPromotionType]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[FrenchPromotionType]"
+                      name="FrenchPromotionType" />
+                    <outputColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[EnglishPromotionCategory]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[EnglishPromotionCategory]"
+                      name="EnglishPromotionCategory" />
+                    <outputColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[SpanishPromotionCategory]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[SpanishPromotionCategory]"
+                      name="SpanishPromotionCategory" />
+                    <outputColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[FrenchPromotionCategory]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[FrenchPromotionCategory]"
+                      name="FrenchPromotionCategory" />
+                    <outputColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[StartDate]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[StartDate]"
+                      name="StartDate" />
+                    <outputColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[EndDate]"
+                      dataType="wstr"
+                      length="255"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[EndDate]"
+                      name="EndDate" />
+                    <outputColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[MinQty]"
+                      dataType="r8"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[MinQty]"
+                      name="MinQty" />
+                    <outputColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[MaxQty]"
+                      dataType="r8"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[MaxQty]"
+                      name="MaxQty" />
+                    <outputColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[CreateDate]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[CreateDate]"
+                      name="CreateDate" />
+                    <outputColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ModifiedDate]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ModifiedDate]"
+                      name="ModifiedDate" />
+                    <outputColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ETLDate]"
+                      dataType="dbTimeStamp"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ETLDate]"
+                      name="ETLDate" />
+                    <outputColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Update\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Update\OLE DB Source.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Update.Paths[OLE DB Source Output]"
+              endId="Package\Update\OLE DB Command.Inputs[OLE DB Command Input]"
+              name="OLE DB Source Output"
+              startId="Package\Update\OLE DB Source.Outputs[OLE DB Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{B3525B29-9CC3-4EDD-B6BE-5A389E36980D}"
+      DTS:From="Package\Create table dimPromotion"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Insert Unknown and Not Available" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{5CE766B2-DC97-4B57-BB03-1692C3BC2E94}"
+      DTS:From="Package\Insert Unknown and Not Available"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\GetMaxDate" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{03120658-8B5F-4936-A748-5DC069E10141}"
+      DTS:From="Package\GetMaxDate"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 2"
+      DTS:To="Package\Update" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 3]"
+      DTS:CreationName=""
+      DTS:DTSID="{3001A519-EB07-4074-8440-1993AED68969}"
+      DTS:From="Package\Update"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 3"
+      DTS:To="Package\Insert" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="205,42"
+          Id="Package\Create table dimPromotion"
+          TopLeft="35.5,35.5" />
+        <NodeLayout
+          Size="136,42"
+          Id="Package\GetMaxDate"
+          TopLeft="385.5,198.5" />
+        <NodeLayout
+          Size="107,42"
+          Id="Package\Insert"
+          TopLeft="584.5,201.5" />
+        <NodeLayout
+          Size="240,42"
+          Id="Package\Insert Unknown and Not Available"
+          TopLeft="180.5,109.5" />
+        <NodeLayout
+          Size="113,42"
+          Id="Package\Update"
+          TopLeft="525.5,90.5" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="138,77.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="162.5,32"
+              Start="0,0"
+              End="162.5,24.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,12" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,12"
+                    Point2="0,16"
+                    Point3="4,16" />
+                  <mssgle:LineSegment
+                    End="158.5,16" />
+                  <mssgle:CubicBezierSegment
+                    Point1="158.5,16"
+                    Point2="162.5,16"
+                    Point3="162.5,20" />
+                  <mssgle:LineSegment
+                    End="162.5,24.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="300.5,151.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="153,47"
+              Start="0,0"
+              End="153,39.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,19.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,19.5"
+                    Point2="0,23.5"
+                    Point3="4,23.5" />
+                  <mssgle:LineSegment
+                    End="149,23.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="149,23.5"
+                    Point2="153,23.5"
+                    Point3="153,27.5" />
+                  <mssgle:LineSegment
+                    End="153,39.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="474.833333333333,198.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="107.166666666667,-66"
+              Start="0,0"
+              End="107.166666666667,-58.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,-22.8604651162791" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,-22.8604651162791"
+                    Point2="0,-26.8604651162791"
+                    Point3="4,-26.8604651162791" />
+                  <mssgle:LineSegment
+                    End="103.166666666667,-26.8604651162791" />
+                  <mssgle:CubicBezierSegment
+                    Point1="103.166666666667,-26.8604651162791"
+                    Point2="107.166666666667,-26.8604651162791"
+                    Point3="107.166666666667,-30.8604651162791" />
+                  <mssgle:LineSegment
+                    End="107.166666666667,-58.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 3]"
+          TopLeft="599.5,132.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="38.5,69"
+              Start="0,0"
+              End="38.5,61.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,24.1780104712042" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,24.1780104712042"
+                    Point2="0,28.1780104712042"
+                    Point3="4,28.1780104712042" />
+                  <mssgle:LineSegment
+                    End="34.5,28.1780104712042" />
+                  <mssgle:CubicBezierSegment
+                    Point1="34.5,28.1780104712042"
+                    Point2="38.5,28.1780104712042"
+                    Point3="38.5,32.1780104712042" />
+                  <mssgle:LineSegment
+                    End="38.5,61.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Insert">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="171,42"
+          Id="Package\Insert\OLE DB Destination"
+          TopLeft="494.5,163.5" />
+        <NodeLayout
+          Size="150,42"
+          Id="Package\Insert\OLE DB Source"
+          TopLeft="86.5,47.5" />
+        <NodeLayout
+          Size="154,42"
+          Id="Package\Insert\Derived Column"
+          TopLeft="235.5,106.5" />
+        <EdgeLayout
+          Id="Package\Insert.Paths[OLE DB Source Output]"
+          TopLeft="236.5,68.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="76,38"
+              Start="0,0"
+              End="76,30.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="72,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="72,0"
+                    Point2="76,0"
+                    Point3="76,4" />
+                  <mssgle:LineSegment
+                    End="76,30.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Insert.Paths[Derived Column Output]"
+          TopLeft="389.5,127.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="105,57"
+              Start="0,0"
+              End="97.5,57">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="48.5,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="48.5,0"
+                    Point2="52.5,0"
+                    Point3="52.5,4" />
+                  <mssgle:LineSegment
+                    End="52.5,53" />
+                  <mssgle:CubicBezierSegment
+                    Point1="52.5,53"
+                    Point2="52.5,57"
+                    Point3="56.5,57" />
+                  <mssgle:LineSegment
+                    End="97.5,57" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Insert\OLE DB Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Insert\OLE DB Source">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost
+    design-time-name="Package\Update">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="150,42"
+          Id="Package\Update\OLE DB Source"
+          TopLeft="74.5,42.5" />
+        <NodeLayout
+          Size="166,42"
+          Id="Package\Update\OLE DB Command"
+          TopLeft="274.5,126.5" />
+        <EdgeLayout
+          Id="Package\Update.Paths[OLE DB Source Output]"
+          TopLeft="149.5,84.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="208,42"
+              Start="0,0"
+              End="208,34.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,17" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,17"
+                    Point2="0,21"
+                    Point3="4,21" />
+                  <mssgle:LineSegment
+                    End="204,21" />
+                  <mssgle:CubicBezierSegment
+                    Point1="204,21"
+                    Point2="208,21"
+                    Point3="208,25" />
+                  <mssgle:LineSegment
+                    End="208,34.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Update\OLE DB Source">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

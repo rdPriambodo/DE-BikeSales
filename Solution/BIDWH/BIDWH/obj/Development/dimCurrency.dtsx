@@ -1,0 +1,186 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="6/21/2022 9:22:03 AM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="LAPTOP-4DUNKJCJ"
+  DTS:CreatorName="LAPTOP-4DUNKJCJ\1333"
+  DTS:DTSID="{78DEAF22-B85E-46C1-AEDA-5B8CD1A8FEA4}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="15.0.2000.180"
+  DTS:LocaleID="14345"
+  DTS:ObjectName="dimCurrency"
+  DTS:PackageType="5"
+  DTS:VersionBuild="2"
+  DTS:VersionGUID="{6C30173B-5E9B-4825-9F28-20CEF6F3EDED}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Create Table dimCurrency"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{DF1C5C96-9301-4A44-833B-8F820A7D8DD1}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Create Table dimCurrency"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{D180EDF5-9DA8-4232-9307-5EF87C1BA49B}"
+          SQLTask:SqlStatementSource="IF NOT EXISTS(SELECT * FROM SYSOBJECTS WHERE NAME = 'dimCurrency' AND XTYPE = 'U')&#xA;BEGIN&#xA;CREATE TABLE [dbo].[dimCurrency](&#xA;&#x9;[CurrencyKey] [int] PRIMARY KEY,&#xA;&#x9;[CurrencyAlternateKey] [nvarchar](255) NULL,&#xA;&#x9;[CurrencyName] [nvarchar](255) NULL,&#xA;&#x9;[ETLDate] [datetime] NULL&#xA;) &#xA;END" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Insert Unkown and Not Available"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{969E1065-4708-445D-BBEF-6D56168A7C79}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Insert Unkown and Not Available"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{D180EDF5-9DA8-4232-9307-5EF87C1BA49B}"
+          SQLTask:SqlStatementSource="IF NOT EXISTS(SELECT * FROM dimCurrency WHERE CurrencyKey IN ('-1'))&#xA;BEGIN&#xA;INSERT INTO dimCurrency VALUES (&#xA;&#x9;'-1', 'Not Available', 'Not Available', '1901-01-01 00:00:00.000'&#xA;)&#xA;END&#xA;IF NOT EXISTS(SELECT * FROM dimCurrency WHERE CurrencyKey IN ('-2'))&#xA;BEGIN&#xA;INSERT INTO dimCurrency VALUES (&#xA;&#x9;'-2', 'Unknown', 'Unknown', '1901-01-01 00:00:00.000'&#xA;)&#xA;END" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Merge"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{E7D9F553-9B48-4FC1-B1BA-2FA5208A1201}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Merge"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{D180EDF5-9DA8-4232-9307-5EF87C1BA49B}"
+          SQLTask:SqlStatementSource="MERGE dimCurrency AS target&#xA;USING stgCurrency&#xA;AS  source&#xA;ON (target.CurrencyKey = source.CurrencyKey)&#xA;WHEN MATCHED AND &#xA;&#x9;ISNULL(target.[CurrencyKey],'NULL')&lt;&gt; ISNULL(source.[CurrencyKey],'NULL') OR&#xA;&#x9;ISNULL(target.[CurrencyAlternateKey],'NULL')&lt;&gt; ISNULL(source.[CurrencyAlternateKey],'NULL') OR&#xA;&#x9;ISNULL(target.[CurrencyName],'NULL')&lt;&gt; ISNULL(source.[CurrencyName],'NULL')&#xA;THEN&#xA;    UPDATE SET &#xA;&#x9;[CurrencyKey]= source.[CurrencyKey]&#xA;    ,[CurrencyAlternateKey]= source.[CurrencyAlternateKey]&#xA;&#x9;,[CurrencyName]= source.[CurrencyName]&#xA;&#x9;, ETLDate = GETDATE()&#xA;&#xA;WHEN NOT MATCHED THEN&#xA;&#x9;&#x9;INSERT (&#xA;&#x9;&#x9;[CurrencyKey]&#xA;&#x9;&#x9;,[CurrencyAlternateKey]&#xA;&#x9;&#x9;,[CurrencyName]&#xA;&#x9;&#x9;,[ETLDate]&#xA;&#x9;&#x9;)&#xA;&#x9;&#x9;VALUES (&#xA;&#x9;&#x9;source.[CurrencyKey]&#xA;&#x9;&#x9;,source.[CurrencyAlternateKey]&#xA;&#x9;&#x9;,source.[CurrencyName]&#xA;&#x9;&#x9;,GETDATE()&#xA;&#x9;&#x9;);" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{AF98D556-8EEE-4B4E-B850-45447B88553F}"
+      DTS:From="Package\Create Table dimCurrency"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Insert Unkown and Not Available" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{119955A2-65A2-4D5C-AEFF-537D4E1A9A7A}"
+      DTS:From="Package\Insert Unkown and Not Available"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\Merge" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="201,42"
+          Id="Package\Create Table dimCurrency"
+          TopLeft="40,30" />
+        <NodeLayout
+          Size="234,42"
+          Id="Package\Insert Unkown and Not Available"
+          TopLeft="204.5,109.5" />
+        <NodeLayout
+          Size="108,42"
+          Id="Package\Merge"
+          TopLeft="423.5,183.5" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="140.5,72">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="181,37.5"
+              Start="0,0"
+              End="181,30">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,14.75" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,14.75"
+                    Point2="0,18.75"
+                    Point3="4,18.75" />
+                  <mssgle:LineSegment
+                    End="177,18.75" />
+                  <mssgle:CubicBezierSegment
+                    Point1="177,18.75"
+                    Point2="181,18.75"
+                    Point3="181,22.75" />
+                  <mssgle:LineSegment
+                    End="181,30" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="321.5,151.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="156,32"
+              Start="0,0"
+              End="156,24.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,12" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,12"
+                    Point2="0,16"
+                    Point3="4,16" />
+                  <mssgle:LineSegment
+                    End="152,16" />
+                  <mssgle:CubicBezierSegment
+                    Point1="152,16"
+                    Point2="156,16"
+                    Point3="156,20" />
+                  <mssgle:LineSegment
+                    End="156,24.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

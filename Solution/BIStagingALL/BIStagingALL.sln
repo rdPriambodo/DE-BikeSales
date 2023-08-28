@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32510.428
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "BIStagingALL", "BIStagingALL\BIStagingALL.dtproj", "{786BCCA8-EDD4-47AF-B724-6F9D9043DE01}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Development|Default = Development|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{786BCCA8-EDD4-47AF-B724-6F9D9043DE01}.Development|Default.ActiveCfg = Development
+		{786BCCA8-EDD4-47AF-B724-6F9D9043DE01}.Development|Default.Build.0 = Development
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7C878D4C-01FC-4696-8A64-B5B11E9C5BE6}
+	EndGlobalSection
+EndGlobal

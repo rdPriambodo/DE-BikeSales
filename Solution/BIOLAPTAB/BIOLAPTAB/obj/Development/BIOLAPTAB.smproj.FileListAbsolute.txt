@@ -1,0 +1,7 @@
+C:\Bootcamp BI\Materi BI\UJIANBI\Solution\BIOLAPTAB\BIOLAPTAB\bin\Model.asdatabase
+C:\Bootcamp BI\Materi BI\UJIANBI\Solution\BIOLAPTAB\BIOLAPTAB\bin\Model.deploymenttargets
+C:\Bootcamp BI\Materi BI\UJIANBI\Solution\BIOLAPTAB\BIOLAPTAB\bin\Model.deploymentoptions
+C:\Bootcamp BI\Materi BI\UJIANBI\Solution\BIOLAPTAB\BIOLAPTAB\obj\Development\BIOLAPTAB.smproj.CoreCompileInputs.cache
+C:\Bootcamp BI\Materi BI\UJIANBI\Solution\BIOLAPTAB\BIOLAPTAB\obj\Development\Model.asdatabase
+C:\Bootcamp BI\Materi BI\UJIANBI\Solution\BIOLAPTAB\BIOLAPTAB\obj\Development\Model.deploymentoptions
+C:\Bootcamp BI\Materi BI\UJIANBI\Solution\BIOLAPTAB\BIOLAPTAB\obj\Development\Model.deploymenttargets
